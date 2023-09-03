@@ -1,0 +1,279 @@
+//=========================================================
+//
+// ゲーム画面処理 [game.cpp]
+// Author = 阿部翔大郎
+//
+//=========================================================
+#include "game.h"
+#include "player.h"
+#include "score.h"
+#include "time.h"
+#include "object3D.h"
+#include "objectX.h"
+#include "garbage.h"
+#include "meshfield.h"
+#include "target.h"
+#include "pause.h"
+#include "input.h"
+#include "ui.h"
+#include "uigage.h"
+#include "renderer.h"
+#include "fade.h"
+#include "uitarget.h"
+#include "camera.h"
+#include "fileload.h"
+
+//===============================================
+// 静的メンバ変数
+//===============================================
+CPlayer *CGame::m_pPlayer = NULL;						// プレイヤークラスのポインタ
+CNumber *CGame::m_pNumber = NULL;						// ナンバークラスのポインタ
+CTime *CGame::m_pTime = NULL;							// タイムクラスのポインタ
+CScore *CGame::m_pScore = NULL;							// スコアクラスのポインタ
+CGarbage *CGame::m_pGarbage = NULL;						// ゴミクラスのポインタ
+CMeshField *CGame::m_pMeshField = NULL;					// メッシュフィールドクラスのポインタ
+CObject3D *CGame::m_pObject3D = NULL;					// オブジェクト3Dクラスのポインタ
+CTarget *CGame::m_pTarget = NULL;						// ターゲットクラスのポインタ
+CDumpster *CGame::m_pDumpster[MAX_DUMPSTER] = {};		// ゴミステーションクラスのポインタ
+CPause *CGame::m_pPause = NULL;							// ポーズクラスのポインタ
+CUi *CGame::m_pUi = NULL;								// UIクラスのポインタ
+CUiGage *CGame::m_pUiGage = NULL;						// ゴミゲージクラスのポインタ
+CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
+CFileLoad *CGame::m_pFileLoad = NULL;					// ロードクラスのポインタ
+
+bool CGame::m_bPause = false;				// ポーズ状態
+bool CGame::m_bStateReady = false;			// GAMSESTATE_READYかどうか
+bool CGame::m_bPauseCamera = false;			// ポーズ時のカメラ操作可能か
+
+//===============================================
+// コンストラクタ
+//===============================================
+CGame::CGame() : CScene()
+{
+	// 値のクリア
+	m_State = STATE_NONE;
+	m_nCounterState = 0;
+}
+
+//===============================================
+// デストラクタ
+//===============================================
+CGame::~CGame()
+{
+	
+}
+
+//===============================================
+// 初期化処理
+//===============================================
+HRESULT CGame::Init(HWND hWnd)
+{
+	m_bPause = false;
+	m_bStateReady = true;		// 待機状態にする
+	m_bPauseCamera = false;
+
+	// ロードの生成
+	m_pFileLoad = new CFileLoad;
+
+	if (m_pFileLoad != NULL)
+	{// 使用されている
+		// ロードの読み込み処理
+		if (FAILED(m_pFileLoad->Init(hWnd)))
+		{// 読み込み処理が失敗した場合
+			return -1;
+		}
+	}
+
+	// カメラの初期化処理
+	CManager::GetCamera()->Init();
+
+	// メッシュフィールドの生成
+	CMeshField::load(hWnd);
+
+	// オブジェクトXファイルの生成
+	CObjectX::Load(hWnd);
+
+	// プレイヤーの生成
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 4);
+
+	// ごみの生成
+	CGarbage::Load();
+
+	// ゴミステーションの読み込みと生成
+	CDumpster::Load();
+	m_pDumpster[0] = CDumpster::Create(D3DXVECTOR3(300.0f, 0.0f, -200.0f), 2);
+	m_pDumpster[1] = CDumpster::Create(D3DXVECTOR3(-5300.0f, 0.0f, -5200.0f), 2);
+
+	// ターゲットの生成
+	m_pTarget = CTarget::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGarbage::SEPARATION_NONE, -1, 5);
+
+	// ターゲットUIの生成
+	m_pUiTarget = CUiTarget::Create(5);
+
+	// スコアの生成
+	m_pScore = CScore::Create(6);
+
+	// タイムの生成
+	m_pTime = CTime::Create(6);
+
+	// ゴミゲージの生成
+	m_pUiGage = CUiGage::Create(6);
+
+	// ポーズの生成
+	m_pPause = CPause::Create(6);
+
+	// 通常状態に設定
+	m_State = STATE_NORMAL;
+	m_nCounterState = 0;
+
+	return S_OK;
+}
+
+//===============================================
+// 終了処理
+//===============================================
+void CGame::Uninit(void)
+{
+	// ファイル読み込みの終了処理
+	m_pFileLoad->Uninit();
+	delete m_pFileLoad;
+	m_pFileLoad = NULL;
+
+	// タイムの終了処理
+	m_pTime->Uninit();
+	delete m_pTime;
+	m_pTime = NULL;
+
+	// スコアの終了処理
+	m_pScore->Uninit();
+	delete m_pScore;
+	m_pScore = NULL;
+
+	// ゴミゲージの終了処理
+	delete m_pUiGage;
+	m_pUiGage = NULL;
+
+	// ターゲットUIの終了処理
+	delete m_pUiTarget;
+	m_pUiTarget = NULL;
+
+	// ポーズの終了処理
+	m_pPause->Uninit();
+	delete m_pPause;
+	m_pPause = NULL;
+
+	// 全てのオブジェクトの破棄
+	CObject::ReleaseAll();
+}
+
+//===============================================
+// 更新処理
+//===============================================
+void CGame::Update(void)
+{
+	if (CManager::GetKeyboardInput()->GetTrigger(DIK_P) == true
+		|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_START, 0) == true)
+	{// ポーズ入力
+		m_bPause = m_bPause ? false : true;		// ポーズ状態切り替え
+	}
+
+#if _DEBUG
+	if (m_bPause == true && CManager::GetKeyboardInput()->GetTrigger(DIK_F3) == true)
+	{// ポーズ中カメラ操作
+		m_bPauseCamera = m_bPauseCamera ? false : true;		// ポーズ状態切り替え
+	}
+
+	if (CManager::GetKeyboardInput()->GetTrigger(DIK_BACKSPACE) == true
+		|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_BACK, 0) == true)
+	{// BackSpace
+		CRenderer::GetFade()->Set(CScene::MODE_RESULT);		// リザルト画面へ移動
+	}
+#endif
+
+	if (m_bStateReady == false)
+	{// 待機状態じゃない
+		if (m_bPause == false)
+		{// ポーズ状態じゃない
+			// タイムの更新処理
+			m_pTime->Update();
+
+			// スコアの更新処理
+			m_pScore->Update();
+
+			// ゴミゲージの更新処理
+			m_pUiGage->Update();
+
+			// ターゲットUIの更新処理
+			m_pUiTarget->Update();
+		}
+	}
+	else if (m_bStateReady == true)
+	{// 待機状態のフラグが立っている
+		if (m_State == STATE_NORMAL)
+		{
+			// 待機状態へ切り替える
+			m_State = STATE_READY;
+			m_nCounterState = STATE_TIME;
+		}
+	}
+
+	if (m_bPause == true && m_bPauseCamera == false)
+	{// ポーズ状態
+		// ポーズの更新処理
+		m_pPause->Update();
+	}
+
+	switch (m_State)
+	{
+	case STATE_NORMAL:  // 通常状態
+		break;
+
+	case STATE_READY:	// 開始待機状態
+		if (m_bPause == false)
+		{// ポーズ状態じゃない
+			m_nCounterState--;
+
+			if (m_nCounterState <= 0)
+			{
+				m_State = STATE_NORMAL;  // 通常状態に設定
+				m_bStateReady = false;
+			}
+		}
+		break;
+
+	case STATE_END:     // 終了状態
+		if (m_bPause == false)
+		{// ポーズ状態じゃない
+			m_nCounterState--;
+
+			if (m_nCounterState <= 0)
+			{
+				m_State = STATE_NONE;  // 何もしていない状態に設定
+			}
+		}
+		break;
+	}
+}
+
+//===============================================
+// 描画処理
+//===============================================
+void CGame::Draw(void)
+{
+	// タイムの描画処理
+	m_pTime->Draw();
+
+	// スコアの描画処理
+	m_pScore->Draw();
+
+	// ゴミゲージの描画処理
+	m_pUiGage->Draw();
+}
+
+//===============================================
+// ポーズ状態の設定
+//===============================================
+void CGame::SetEnablePause(const bool bPause)
+{
+	m_bPause = bPause;
+}

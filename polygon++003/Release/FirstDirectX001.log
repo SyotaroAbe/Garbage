@@ -1,0 +1,50 @@
+﻿  bg.cpp
+  block.cpp
+  bullet.cpp
+  camera.cpp
+  dumpster.cpp
+  edit.cpp
+  effect.cpp
+  enemy.cpp
+  explosion.cpp
+  fade.cpp
+  game.cpp
+  garbage.cpp
+  item.cpp
+  manager.cpp
+  meshfield.cpp
+  model.cpp
+  motion.cpp
+  multibg.cpp
+  number.cpp
+  object.cpp
+  コンパイル中...
+  object2D.cpp
+  object3D.cpp
+  objectBillboard.cpp
+  objectMesh.cpp
+  objectX.cpp
+  particle.cpp
+  pause.cpp
+  player.cpp
+  rankIn.cpp
+  ranking.cpp
+  renderer.cpp
+  result.cpp
+  rockon.cpp
+  score.cpp
+  shadow.cpp
+  target.cpp
+  time.cpp
+  title.cpp
+  ui.cpp
+  uigage.cpp
+  コンパイル中...
+  uitarget.cpp
+  コード生成しています。
+  18 of 580 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  FirstDirectX001.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\polygon++003\FirstDirectX001.exe
+  FirstDirectX001.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\polygon++003\FirstDirectX001.pdb (Full PDB)
