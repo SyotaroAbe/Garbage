@@ -1,0 +1,31 @@
+﻿  block.cpp
+  bullet.cpp
+  camera.cpp
+  dumpster.cpp
+  edit.cpp
+  game.cpp
+  garbage.cpp
+  item.cpp
+  manager.cpp
+  meshfield.cpp
+  object.cpp
+  object2D.cpp
+  object3D.cpp
+  objectX.cpp
+  pause.cpp
+  player.cpp
+  renderer.cpp
+  rockon.cpp
+  target.cpp
+  tutorial.cpp
+  コンパイル中...
+  uigage.cpp
+  uioperation.cpp
+  uitarget.cpp
+  コード生成しています。
+  38 of 611 functions ( 6.2%) were compiled, the rest were copied from previous compilation.
+    4 functions were new in current compilation
+    71 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\FirstDirectX001.exe
+  FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\FirstDirectX001.pdb (Full PDB)
