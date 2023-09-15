@@ -8,7 +8,6 @@
 #define _TARGET_H_     // 2重インクルード防止のマクロ定義する
 
 #include "main.h"
-#include "object2D.h"
 #include "objectBillboard.h"
 #include "garbage.h"
 

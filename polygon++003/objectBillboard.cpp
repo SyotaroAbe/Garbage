@@ -16,7 +16,6 @@
 // マクロ定義
 //===============================================
 #define BILLBOARD_LIFE		(150)		// ビルボードの体力
-#define SIZE_DIFF			(0.4f)		// サイズの値の補正
 #define MAX_DIFF			(1.0f)		// 最大補正値
 
 //===============================================
@@ -336,13 +335,13 @@ void CObjectBillboard::RevisionPos(const D3DXVECTOR3 pos, float fMalti)
 //===============================================
 // 拡大縮小処理
 //===============================================
-void CObjectBillboard::ScalingSize(const float fSize)
+void CObjectBillboard::ScalingSize(const float fSize, float fMalti)
 {
 	// 目的のサイズまでの差分を計算
 	float fSizeDiff = fSize - m_fSizeX;
 
 	// サイズの補正
-	m_fSizeX += fSizeDiff * SIZE_DIFF;
+	m_fSizeX += fSizeDiff * fMalti;
 	m_fSizeZ = m_fSizeX;
 
 	VERTEX_3D *pVtx;	// 頂点情報へのポインタ

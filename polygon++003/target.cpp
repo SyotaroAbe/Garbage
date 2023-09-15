@@ -23,10 +23,10 @@
 // マクロ定義
 //===============================================
 #define DIFF_SIZE			(32.0f)			// 幅（半分）
-#define DISTANCE_PLAYER		(-500.0f)		// プレイヤーとの距離
+#define DISTANCE_PLAYER		(-600.0f)		// プレイヤーとの距離
 #define SPEED_TARGET		(23.0f)			// 移動速度
 #define SPEED_TARGETGAGEMAX	(16.0f)			// ゲージが最大時の移動速度
-#define MAX_LENTH			(260.0f)		// 最大位置
+#define MAX_LENTH			(280.0f)		// 最大位置
 #define ROT_DIFF			(0.5f)			// 曲がる角度の差分
 #define POS_DIFF			(0.1f)			// 位置の値の補正
 #define ADD_REVISION		(0.2f)			// 補正率の増加値

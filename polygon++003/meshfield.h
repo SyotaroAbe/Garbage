@@ -67,8 +67,8 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	enum GABAGEPOS
 	{
 		GABAGEPOS_CENTER = 0,	// 真ん中
-		GABAGEPOS_RIGHT,		// 右
-		GABAGEPOS_LEFT,			// 左
+		GABAGEPOS_EDGE,			// 端
+		GABAGEPOS_SIDE,			// 横並び
 		GABAGEPOS_MAX
 	};
 

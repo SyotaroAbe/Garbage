@@ -34,6 +34,7 @@ class CUi;
 class CUiGage;
 class CUiTarget;
 class CFileLoad;
+class CJustDust;
 
 //===============================================
 // ゲーム画面クラス
@@ -74,6 +75,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	static CUi *GetUi() { return m_pUi; }
 	static CUiGage *GetUiGage() { return m_pUiGage; }
 	static CUiTarget *GetUiTarget() { return m_pUiTarget; }
+	static CJustDust *GetJustDust() { return m_pJustDust; }
 
 	static void SetEnablePause(const bool bPause);
 	static bool GetPauseState(void) { return m_bPause; }
@@ -97,6 +99,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CUi *m_pUi;								// UIクラスのポインタ
 	static CUiGage *m_pUiGage;						// ゴミゲージクラスのポインタ
 	static CUiTarget *m_pUiTarget;					// ターゲットUIクラスのポインタ
+	static CJustDust *m_pJustDust;			// JustDust表示クラスのポインタ
 
 	static bool m_bStateReady;		// GAMSESTATE_READYかどうか
 	static bool m_bPause;			// 現在のポーズの状態

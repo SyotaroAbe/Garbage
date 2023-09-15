@@ -22,6 +22,7 @@
 #include "uigage.h"
 #include "tutorial.h"
 #include "sound.h"
+#include "justdust.h"
 
 //===============================================
 // 静的メンバ変数
@@ -189,8 +190,9 @@ HRESULT CGarbage::Init(D3DXVECTOR3 pos)
 	CObjectX::Init(pos);
 
 	// 種類の設定
-	srand(m_nRandCounter);					// randの値をリセット
-	m_type = (TYPE)(rand() % TYPE_MAX);		// randの値を取得
+	srand(m_nRandCounter);							// randの値をリセット
+	m_type = (TYPE)(rand() % TYPE_MAX);				// randの値を取得(種類)
+	m_size = (MODELSIZE)(rand() % MODELSIZE_MAX);	// randの値を取得(サイズ)
 
 	// 状態の設定
 	m_state = STATE_NORMAL;
@@ -451,11 +453,11 @@ void CGarbage::Update(void)
 				if (type == CObject::TYPE_DUMPSTER)
 				{// ゴミステーション
 					if ((CManager::GetMode() == CScene::MODE_TUTORIAL
-						&& pObject->GetPos().x <= CTutorial::GetTarget()->GetPos().x + DUMPSTER_LENTH && pObject->GetPos().x >= CTutorial::GetTarget()->GetPos().x - DUMPSTER_LENTH
-						&& pObject->GetPos().z <= CTutorial::GetTarget()->GetPos().z + DUMPSTER_LENTH && pObject->GetPos().z >= CTutorial::GetTarget()->GetPos().z - DUMPSTER_LENTH)
+						&& pObject->GetPos().x <= CTutorial::GetTarget()->GetPos().x + DUMPSTER_LENTH + TARGET_SIZEX && pObject->GetPos().x >= CTutorial::GetTarget()->GetPos().x - DUMPSTER_LENTH - TARGET_SIZEX
+						&& pObject->GetPos().z <= CTutorial::GetTarget()->GetPos().z + DUMPSTER_LENTH + TARGET_SIZEY && pObject->GetPos().z >= CTutorial::GetTarget()->GetPos().z - DUMPSTER_LENTH - TARGET_SIZEY)
 						|| (CManager::GetMode() == CScene::MODE_GAME
-						&& pObject->GetPos().x <= CGame::GetTarget()->GetPos().x + DUMPSTER_LENTH && pObject->GetPos().x >= CGame::GetTarget()->GetPos().x - DUMPSTER_LENTH
-						&& pObject->GetPos().z <= CGame::GetTarget()->GetPos().z + DUMPSTER_LENTH && pObject->GetPos().z >= CGame::GetTarget()->GetPos().z - DUMPSTER_LENTH))
+						&& pObject->GetPos().x <= CGame::GetTarget()->GetPos().x + DUMPSTER_LENTH + TARGET_SIZEX && pObject->GetPos().x >= CGame::GetTarget()->GetPos().x - DUMPSTER_LENTH - TARGET_SIZEX
+						&& pObject->GetPos().z <= CGame::GetTarget()->GetPos().z + DUMPSTER_LENTH + TARGET_SIZEY && pObject->GetPos().z >= CGame::GetTarget()->GetPos().z - DUMPSTER_LENTH - TARGET_SIZEY))
 					{// ターゲットがゴミステーションを利用できる範囲内に入った
 						if (CManager::GetKeyboardInput()->GetTrigger(DIK_SPACE) == true
 							|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true)
@@ -590,6 +592,7 @@ void CGarbage::Separation(SEPARATION separation)
 			if (m_bJustDust == true)
 			{// JustDustだった場合
 				CTutorial::GetScore()->Add(ADD_SOCREJUST);	// スコア加算
+				CTutorial::GetJustDust()->Set(true);		// JustDust設定
 			}
 			else
 			{
@@ -601,6 +604,7 @@ void CGarbage::Separation(SEPARATION separation)
 			if (m_bJustDust == true)
 			{// JustDustだった場合
 				CGame::GetScore()->Add(ADD_SOCREJUST);	// スコア加算
+				CGame::GetJustDust()->Set(true);		// JustDust設定
 			}
 			else
 			{

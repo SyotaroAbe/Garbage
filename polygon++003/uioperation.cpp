@@ -247,17 +247,17 @@ void CUiOperation::Update(void)
 		case TEX_GAGE:			// ゲージ
 			m_nTime++;		// 時間をカウントアップ
 
-			// ゴミゲージの設定処理
-			CTutorial::GetUiGage()->Set(0.01f);
+			//// ゴミゲージの設定処理
+			//CTutorial::GetUiGage()->Set(0.01f);
 
 			if (m_nTime > TIME_PROGRESS)
 			{// 
 				m_nTime = 0;		// カウントをリセット
 				m_nProgress++;		// 進捗を進める
 
-				// ゴミの量を元に戻す
-				CTutorial::GetUiGage()->Set(-1.0f);
-				CTutorial::GetUiGage()->Set(m_fGarbage);
+				//// ゴミの量を元に戻す
+				//CTutorial::GetUiGage()->Set(-1.0f);
+				//CTutorial::GetUiGage()->Set(m_fGarbage);
 
 				// 終了処理
 				Uninit();
@@ -278,8 +278,8 @@ void CUiOperation::Update(void)
 					{// ゴミステーション
 						if ((CManager::GetKeyboardInput()->GetTrigger(DIK_SPACE) == true
 							|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true)
-							&& pObject->GetPos().x <= CTutorial::GetPlayer()->GetPos().x + DUMPSTER_LENTH && pObject->GetPos().x >= CTutorial::GetPlayer()->GetPos().x - DUMPSTER_LENTH
-							&& pObject->GetPos().z <= CTutorial::GetPlayer()->GetPos().z + DUMPSTER_LENTH && pObject->GetPos().z >= CTutorial::GetPlayer()->GetPos().z - DUMPSTER_LENTH)
+							&& pObject->GetPos().x <= CTutorial::GetTarget()->GetPos().x + DUMPSTER_LENTH && pObject->GetPos().x >= CTutorial::GetTarget()->GetPos().x - DUMPSTER_LENTH
+							&& pObject->GetPos().z <= CTutorial::GetTarget()->GetPos().z + DUMPSTER_LENTH && pObject->GetPos().z >= CTutorial::GetTarget()->GetPos().z - DUMPSTER_LENTH)
 						{// ゴミステーションを使った
 							m_nProgress++;		// 進捗を進める
 

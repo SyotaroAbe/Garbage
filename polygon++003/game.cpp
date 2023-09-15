@@ -24,6 +24,7 @@
 #include "fileload.h"
 #include "debugproc.h"
 #include "sound.h"
+#include "justdust.h"
 
 //===============================================
 // 静的メンバ変数
@@ -42,6 +43,7 @@ CUi *CGame::m_pUi = NULL;								// UIクラスのポインタ
 CUiGage *CGame::m_pUiGage = NULL;						// ゴミゲージクラスのポインタ
 CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
 CFileLoad *CGame::m_pFileLoad = NULL;					// ロードクラスのポインタ
+CJustDust *CGame::m_pJustDust = NULL;					// JustDust表示クラスのポインタ
 
 bool CGame::m_bPause = false;				// ポーズ状態
 bool CGame::m_bStateReady = false;			// GAMSESTATE_READYかどうか
@@ -113,6 +115,9 @@ HRESULT CGame::Init(HWND hWnd)
 
 	// ターゲットUIの生成
 	m_pUiTarget = CUiTarget::Create(5);
+
+	// JustDustの生成
+	m_pJustDust = CJustDust::Create(5);
 
 	// スコアの生成
 	m_pScore = CScore::Create(6);

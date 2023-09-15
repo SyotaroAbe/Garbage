@@ -32,7 +32,7 @@
 #define LENTH_NEAR				(150.0f)	// 道の中心からの距離（近い）
 #define GABAGE_POSITION			(280.0f)	// ゴミの置かれる位置
 #define DISTANCE_HEIGHT			(100.0f)	// ゴミ同士の縦間隔
-#define DISTANCE_WIDTH			(70.0f)		// ゴミ同士の横間隔
+#define DISTANCE_WIDTH			(220.0f)		// ゴミ同士の横間隔
 
 // TUTORIAL
 #define DELETE_POSITION			(650.0f)	// 床を破棄する位置
@@ -1986,22 +1986,41 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 	m_type = type;
 
 	srand(timeGetTime());										// randの値を初期化
-	int nPosRand = rand() % GABAGEPOS_LEFT + GABAGEPOS_RIGHT;	// randの値を取得（位置）
+	int nPosRand = rand() % 5 + GABAGEPOS_CENTER;	// randの値を取得（位置）
 	int nNumXRand = 1;											// randの値を取得（数X）
 	int nNumYRand = rand() % 2 + 1;								// randの値を取得（数Y）
 
 	if (CManager::GetMode() == CScene::MODE_GAME)
 	{// ゲームモード
-		if (type == TYPE_CURVE_UPRIGHT || type == TYPE_CURVE_DOWNLEFT)
+		if (/*type == TYPE_CURVE_UPRIGHT || type == TYPE_CURVE_DOWNLEFT ||*/ nPosRand > GABAGEPOS_EDGE)
 		{
-			nNumXRand = rand() % RANDPOSITION_MAX + 1;				// randの値を取得（数X）
-			nNumYRand = rand() % RANDPOSITION_MAX + 1;				// randの値を取得（数Y）
+			nNumXRand = RANDPOSITION_MAX;				// randの値を取得（数X）
+			nNumYRand = RANDPOSITION_MAX;				// randの値を取得（数Y）
 		}
-		else
+	}
+
+	// 配置設定
+	switch (nPosRand)
+	{
+	case GABAGEPOS_CENTER:		// 中心
+		nNumYRand = 1;
+		nNumXRand = 1;
+		break;
+
+	case GABAGEPOS_EDGE:		// 端
+		nNumXRand = 1;
+		break;
+
+	default:					// 横並び
+		if (m_type == TYPE_STRAIGHT_H || m_type == TYPE_DEADEND_DOWN || m_type == TYPE_DEADEND_UP)
 		{
-			nNumXRand = 1;
 			nNumYRand = 1;
 		}
+		else if (m_type == TYPE_STRAIGHT_W || m_type == TYPE_DEADEND_RIGHT || m_type == TYPE_DEADEND_LEFT)
+		{
+			nNumXRand = 1;
+		}
+		break;
 	}
 
 	// ゴミのランダム配置
@@ -2009,242 +2028,259 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 	{
 		for (int nCntY = 0; nCntY < nNumYRand; nCntY++)
 		{
-			int nUseRand = rand() % 1;		// randの値を取得（配置するか）
-
-			if (nUseRand == 0)
-			{// 配置する
-				// 種類別に処理を行う
-				switch (m_type)
+			// 種類別に処理を行う
+			switch (m_type)
+			{
+			case TYPE_STRAIGHT_H:		// 縦直線
+				// ゴミの位置
+				switch (nPosRand)
 				{
-				case TYPE_STRAIGHT_H:		// 縦直線
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
 					break;
 
-				case TYPE_STRAIGHT_W:		// 横直線
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
 					break;
 
-				case TYPE_CURVE_UPLEFT:		// カーブ（左上角）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_CURVE_UPRIGHT:	// カーブ（右上角）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_CURVE_DOWNRIGHT:	// カーブ（右下角）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_CURVE_DOWNLEFT:	// カーブ（左下角）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_TJUNCTION_UP:		// T字路（上）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_TJUNCTION_RIGHT:	// T字路（右）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_TJUNCTION_DOWN:	// T字路（下）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_TJUNCTION_LEFT:	// T字路（左）
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_CROSSROADS:		// 十字路
-					// ゴミの位置
-					switch (nPosRand)
-					{
-					case GABAGEPOS_CENTER:		// 中心
-						break;
-
-					case GABAGEPOS_RIGHT:		// 右
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
-						break;
-
-					case GABAGEPOS_LEFT:		// 左
-						CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-							m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
-						break;
-					}
-					break;
-
-				case TYPE_DEADEND_UP:		// 行き止まり（上）
-					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE,
-						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE), 2);
-					break;
-
-				case TYPE_DEADEND_RIGHT:	// 行き止まり（右）
-					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE,
-						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE), 2);
-					break;
-
-				case TYPE_DEADEND_DOWN:		// 行き止まり（下）
-					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE,
-						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE), 2);
-					break;
-
-				case TYPE_DEADEND_LEFT:		// 行き止まり（左）
-					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE,
-						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_GABAGE), 2);
+				default:		// 横並び
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH), 2);
 					break;
 				}
+				break;
+
+			case TYPE_STRAIGHT_W:		// 横直線
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH,
+						m_pos.y, m_pos.z + cosf(D3DX_PI * ROT_RIGHT) * nCntY * DISTANCE_WIDTH + cosf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH), 2);
+					break;
+				}
+				break;
+
+			case TYPE_CURVE_UPLEFT:		// カーブ（左上角）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_CURVE_UPRIGHT:	// カーブ（右上角）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_CURVE_DOWNRIGHT:	// カーブ（右下角）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_CURVE_DOWNLEFT:	// カーブ（左下角）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_TJUNCTION_UP:		// T字路（上）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_TJUNCTION_RIGHT:	// T字路（右）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_TJUNCTION_DOWN:	// T字路（下）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_TJUNCTION_LEFT:	// T字路（左）
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_CROSSROADS:		// 十字路
+				// ゴミの位置
+				switch (nPosRand)
+				{
+				case GABAGEPOS_CENTER:		// 中心
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_UP) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_UP) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_UP) * LENTH_FAR), 2);
+					break;
+
+				case GABAGEPOS_EDGE:		// 端
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * LENTH_FAR), 2);
+					break;
+
+				default:		// 横並び
+					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					break;
+				}
+				break;
+
+			case TYPE_DEADEND_UP:		// 行き止まり（上）
+				CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH,
+					m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH), 2);
+				break;
+
+			case TYPE_DEADEND_RIGHT:	// 行き止まり（右）
+				CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH,
+					m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH), 2);
+				break;
+
+			case TYPE_DEADEND_DOWN:		// 行き止まり（下）
+				CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH,
+					m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH), 2);
+				break;
+
+			case TYPE_DEADEND_LEFT:		// 行き止まり（左）
+				CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH,
+					m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * DISTANCE_WIDTH), 2);
+				break;
 			}
 		}
 	}

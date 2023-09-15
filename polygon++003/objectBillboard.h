@@ -10,6 +10,11 @@
 #include "object3D.h"
 
 //===============================================
+// マクロ定義
+//===============================================
+#define SIZE_DIFF			(0.4f)		// サイズの値の補正
+
+//===============================================
 // ビルボードクラス
 //===============================================
 class CObjectBillboard : public CObject
@@ -28,7 +33,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 
 	void UpdatePos(D3DXVECTOR3 pos, float fSizeX, float fSizeY);
 	void RevisionPos(const D3DXVECTOR3 pos, const float fMalti = 1.0f);
-	void ScalingSize(const float fSize);
+	void ScalingSize(const float fSize, float fMalti = SIZE_DIFF);
 	void DrawEffect(void);
 
 	void BindTexture(int nIdx);

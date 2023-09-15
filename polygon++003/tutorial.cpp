@@ -21,6 +21,7 @@
 #include "fileload.h"
 #include "dumpster.h"
 #include "uioperation.h"
+#include "justdust.h"
 
 //===============================================
 // マクロ定義
@@ -46,6 +47,7 @@ CUiGage *CTutorial::m_pUiGage = NULL;			// ゴミゲージクラスのポインタ
 CUiTarget *CTutorial::m_pUiTarget = NULL;		// ターゲットUIクラスのポインタ
 CFileLoad *CTutorial::m_pFileLoad = NULL;		// ロードクラスのポインタ
 CUiOperation *CTutorial::m_pUiOperation = NULL;	// 操作方法表示クラスのポインタ
+CJustDust *CTutorial::m_pJustDust = NULL;		// JustDust表示クラスのポインタ
 
 //===============================================
 // コンストラクタ
@@ -107,6 +109,9 @@ HRESULT CTutorial::Init(HWND hWnd)
 
 	// ターゲットUIの生成
 	m_pUiTarget = CUiTarget::Create(5);
+
+	// JustDustの生成
+	m_pJustDust = CJustDust::Create(5);
 
 	// スコアの生成
 	m_pScore = CScore::Create(6);

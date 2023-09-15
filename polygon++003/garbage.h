@@ -22,7 +22,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	~CGarbage();					// デストラクタ
 
 	// ゴミの種類
-	typedef enum
+	enum TYPE
 	{
 		TYPE_BAG = 0,				// 鞄
 		TYPE_BUCKET,				// バケツ
@@ -37,20 +37,29 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 		//TYPE_RECYCLABLE_BAG,			// ポリ袋
 		//TYPE_EGGPACK,				// 卵パック
 		TYPE_MAX
-	}TYPE;
+	};
+
+	// サイズ
+	enum MODELSIZE
+	{
+		MODELSIZE_NORMAL = 0,	// 通常
+		MODELSIZE_SMALL,		// 小さい
+		MODELSIZE_BIG,			// 大きい
+		MODELSIZE_MAX
+	};
 
 	// ゴミの分別
-	typedef enum
+	enum SEPARATION
 	{
 		SEPARATION_NONE = 0,		// なし
 		SEPARATION_BURN,			// 燃えるゴミ
 		SEPARATION_NONFLAMMABLE,	// 燃えないゴミ
 		SEPARATION_RECYCLABLE,			// 資源ゴミ
 		SEPARATION_MAX
-	}SEPARATION;
+	};
 
 	// ゴミの状態
-	typedef enum
+	enum STATE
 	{
 		STATE_NONE = 0,		// なし
 		STATE_NORMAL,		// 通常状態
@@ -62,7 +71,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 		STATE_DUMPSTER,		// ゴミステーション行き
 		STATE_DELETE,		// 破棄
 		STATE_MAX
-	}STATE;
+	};
 
 	static HRESULT Load(void);
 	static void Unload(void);
@@ -88,6 +97,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	D3DXVECTOR3 m_posDiff;					// 目的の位置までの差分
 	D3DXVECTOR3 m_nextposDest;				// 次の目的の位置
 	TYPE m_type;							// ゴミの種類
+	MODELSIZE m_size;						// モデルのサイズ
 	STATE m_state;							// ゴミの状態
 	SEPARATION m_separation;				// 分別の種類
 	SEPARATION m_rockonType;				// ロックオン時の分別
