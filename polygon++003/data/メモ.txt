@@ -1,3 +1,8 @@
+・タイトル
+Garbage Separation（ごみ分別）
+Just Separation（正しい分別）
+Just Judgement（同上）
+
 ・マップランダム自動生成
 map-arg
 

@@ -65,6 +65,7 @@ CGarbage::CGarbage() : CObjectX(4)
 	m_posDiff = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nextposDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_type = TYPE_BAG;
+	m_size = MODELSIZE_NORMAL;
 	m_state = STATE_NONE;
 	m_separation = SEPARATION_NONE;
 	m_rockonType = SEPARATION_NONE;
@@ -87,6 +88,7 @@ CGarbage::CGarbage(int nPriority) : CObjectX(nPriority)
 	m_posDiff = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nextposDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_type = TYPE_BAG;
+	m_size = MODELSIZE_NORMAL;
 	m_state = STATE_NONE;
 	m_separation = SEPARATION_NONE;
 	m_rockonType = SEPARATION_NONE;
@@ -112,9 +114,15 @@ CGarbage::~CGarbage()
 HRESULT CGarbage::Load(void)
 {
 	// Ｘファイルに読み込み
-	m_aIdxXFile[TYPE_BAG] = CManager::GetXFile()->Regist("data\\MODEL\\Stage_Illumination.x");
-	m_aIdxXFile[TYPE_BUCKET] = CManager::GetXFile()->Regist("data\\MODEL\\Chair001.x");
-	m_aIdxXFile[TYPE_HAT] = CManager::GetXFile()->Regist("data\\MODEL\\Camera001.x");
+	m_aIdxXFile[TYPE_BOOKOLD] = CManager::GetXFile()->Regist("data\\MODEL\\BookOld.x");
+	m_aIdxXFile[TYPE_BOOT] = CManager::GetXFile()->Regist("data\\MODEL\\boot.x");
+	m_aIdxXFile[TYPE_BAG] = CManager::GetXFile()->Regist("data\\MODEL\\bag001.x");
+	m_aIdxXFile[TYPE_LIGHT] = CManager::GetXFile()->Regist("data\\MODEL\\Stage_Illumination.x");
+	m_aIdxXFile[TYPE_CAMERA] = CManager::GetXFile()->Regist("data\\MODEL\\Camera001.x");
+	m_aIdxXFile[TYPE_BUCKET] = CManager::GetXFile()->Regist("data\\MODEL\\bucket.x");
+	m_aIdxXFile[TYPE_BIN] = CManager::GetXFile()->Regist("data\\MODEL\\bin.x");
+	m_aIdxXFile[TYPE_CAN] = CManager::GetXFile()->Regist("data\\MODEL\\can.x");
+	m_aIdxXFile[TYPE_DANBORU] = CManager::GetXFile()->Regist("data\\MODEL\\danboru.x");
 
 	return S_OK;
 }
@@ -198,22 +206,31 @@ HRESULT CGarbage::Init(D3DXVECTOR3 pos)
 	m_state = STATE_NORMAL;
 
 	// 分別の種類
-	switch (m_type)
-	{
-	case TYPE_BAG:		// 鞄
-		// 燃えないゴミ
-		m_separation = SEPARATION_NONFLAMMABLE;
-		break;
+	if (m_type == TYPE_BOOKOLD || m_type == TYPE_BOOT || m_type == TYPE_BAG)
+	{// 古本・長靴・鞄
+		m_separation = SEPARATION_BURN;				// 燃えるゴミ
+	}
+	else if (m_type == TYPE_LIGHT || m_type == TYPE_CAMERA || m_type == TYPE_BUCKET)
+	{// ライト・カメラ・バケツ
+		m_separation = SEPARATION_NONFLAMMABLE;		// 燃えないゴミ
+	}
+	else if (m_type == TYPE_BIN || m_type == TYPE_CAN || m_type == TYPE_DANBORU)
+	{// 瓶・缶・段ボール
+		m_separation = SEPARATION_RECYCLABLE;		// 資源ゴミ
+	}
 
-	case TYPE_BUCKET:	// バケツ
-		// 燃えるゴミ
-		m_separation = SEPARATION_BURN;
-		break;
-
-	default:			// その他
-		// 資源ゴミ
-		m_separation = SEPARATION_RECYCLABLE;
-		break;
+	// モデルサイズ設定
+	if (m_type == TYPE_BOOKOLD || m_type == TYPE_LIGHT || m_type == TYPE_BIN)
+	{// 古本・ライト・瓶
+		m_size = MODELSIZE_NORMAL;					// 通常
+	}
+	else if (m_type == TYPE_BOOT || m_type == TYPE_CAMERA || m_type == TYPE_CAN)
+	{// 長靴・カメラ・缶
+		m_size = MODELSIZE_SMALL;					// 小さい
+	}
+	else if (m_type == TYPE_BAG || m_type == TYPE_BUCKET || m_type == TYPE_DANBORU)
+	{// 鞄・バケツ・段ボール
+		m_size = MODELSIZE_BIG;						// 大きい
 	}
 
 	m_nRandCounter++;	// rand数値変更
@@ -415,11 +432,39 @@ void CGarbage::Update(void)
 			// 設定処理
 			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
 			{
-				CTutorial::GetUiGage()->Set(AMOUNT_OF_RISE);
+				// モデルのサイズ別にゲージ上昇量を変更
+				switch (m_size)
+				{
+				case MODELSIZE_NORMAL:		// 通常
+					CTutorial::GetUiGage()->Set(AMOUNT_OF_RISE_NORMAL);		// ゲージ上昇
+					break;
+
+				case MODELSIZE_SMALL:		// 小さい
+					CTutorial::GetUiGage()->Set(AMOUNT_OF_RISE_SMALL);		// ゲージ上昇
+					break;
+
+				case MODELSIZE_BIG:			// 大きい
+					CTutorial::GetUiGage()->Set(AMOUNT_OF_RISE_BIG);		// ゲージ上昇
+					break;
+				}
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
-				CGame::GetUiGage()->Set(AMOUNT_OF_RISE);
+				// モデルのサイズ別にゲージ上昇量を変更
+				switch (m_size)
+				{
+				case MODELSIZE_NORMAL:		// 通常
+					CGame::GetUiGage()->Set(AMOUNT_OF_RISE_NORMAL);		// ゲージ上昇
+					break;
+
+				case MODELSIZE_SMALL:		// 小さい
+					CGame::GetUiGage()->Set(AMOUNT_OF_RISE_SMALL);		// ゲージ上昇
+					break;
+
+				case MODELSIZE_BIG:			// 大きい
+					CGame::GetUiGage()->Set(AMOUNT_OF_RISE_BIG);		// ゲージ上昇
+					break;
+				}
 			}
 
 			Separation(m_rockonType);		// 分別処理（スコアに加算される）

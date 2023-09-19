@@ -130,7 +130,7 @@ void CUiGage::Update(void)
 	if (CManager::GetKeyboardInput()->GetPress(DIK_1) == true)
 	{// 1キー
 		// 設定処理
-		Set(AMOUNT_OF_RISE);
+		Set(AMOUNT_OF_RISE_NORMAL);
 	}
 	else if (CManager::GetKeyboardInput()->GetPress(DIK_2) == true)
 	{// 2キー

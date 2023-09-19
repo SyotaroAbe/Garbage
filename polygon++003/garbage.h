@@ -24,18 +24,19 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	// ゴミの種類
 	enum TYPE
 	{
-		TYPE_BAG = 0,				// 鞄
+		// 燃えるゴミ
+		TYPE_BOOKOLD = 0,			// 本
+		TYPE_BOOT,					// 長靴
+		TYPE_BAG,					// 鞄
+		// 燃えないゴミ
+		TYPE_LIGHT,					// ライト
+		TYPE_CAMERA,				// カメラ
 		TYPE_BUCKET,				// バケツ
-		TYPE_HAT,					// 帽子
-		//TYPE_SWIMRING,				// 浮き輪
-		//TYPE_TAKOYAKI_MACHINE,		// タコ焼き機
-		//TYPE_CAN,					// 缶
-		//TYPE_POT,					// 鍋
-		//TYPE_MIRROR,				// 鏡
-		//TYPE_BOTTLE,				// ボトル
-		//TYPE_TUBE,					// チューブ
-		//TYPE_RECYCLABLE_BAG,			// ポリ袋
-		//TYPE_EGGPACK,				// 卵パック
+		// 資源ゴミ
+		TYPE_BIN,					// 瓶
+		TYPE_CAN,					// 缶
+		TYPE_DANBORU,				// 段ボール
+
 		TYPE_MAX
 	};
 
@@ -54,7 +55,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 		SEPARATION_NONE = 0,		// なし
 		SEPARATION_BURN,			// 燃えるゴミ
 		SEPARATION_NONFLAMMABLE,	// 燃えないゴミ
-		SEPARATION_RECYCLABLE,			// 資源ゴミ
+		SEPARATION_RECYCLABLE,		// 資源ゴミ
 		SEPARATION_MAX
 	};
 

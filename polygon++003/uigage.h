@@ -18,7 +18,9 @@ class CObject2D;
 //===============================================
 // マクロ定義
 //===============================================
-#define AMOUNT_OF_RISE	(0.05f)				// ゲージ上昇量
+#define AMOUNT_OF_RISE_NORMAL	(0.15f)				// ゲージ上昇量（通常）
+#define AMOUNT_OF_RISE_BIG		(0.25f)				// ゲージ上昇量（大きい）
+#define AMOUNT_OF_RISE_SMALL	(0.05f)				// ゲージ上昇量（小さい）
 #define MAX_GARBAGE		(1.0f)				// 最大ゴミ量
 
 //===============================================
