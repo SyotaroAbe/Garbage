@@ -166,6 +166,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fever.cpp" />
     <ClCompile Include="fileload.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="garbage.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="justdust.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="logo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshfield.cpp" />
@@ -195,6 +197,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precompile.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
+    <ClCompile Include="pressenter.cpp" />
     <ClCompile Include="rankIn.cpp" />
     <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -226,6 +229,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fever.h" />
     <ClInclude Include="fileload.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="garbage.h" />
@@ -233,6 +237,7 @@
     <ClInclude Include="item.h" />
     <ClInclude Include="justdust.h" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="logo.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshfield.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="precompile.h" />
+    <ClInclude Include="pressenter.h" />
     <ClInclude Include="rankIn.h" />
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />

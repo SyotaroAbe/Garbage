@@ -1,21 +1,55 @@
-﻿  dumpster.cpp
-  edit.cpp
-  game.cpp
-  garbage.cpp
-  justdust.cpp
-  manager.cpp
-  meshfield.cpp
-  player.cpp
-  rockon.cpp
-  target.cpp
-  tutorial.cpp
-  uigage.cpp
-  uioperation.cpp
-  uitarget.cpp
+﻿  uioperation.cpp
   コード生成しています。
-  9 of 623 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+  1 of 659 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    8 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
+fade.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+fever.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+fileload.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+game.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+garbage.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+input.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+item.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+justdust.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+light.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+logo.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+main.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+manager.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+meshfield.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+meshwall.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+model.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+motion.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+multibg.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+number.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+object.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+object2D.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+object3D.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+objectBillboard.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+objectMesh.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+objectX.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+particle.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+pause.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+player.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+precompile.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+pressenter.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+rankIn.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+ranking.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+renderer.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+result.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+rockon.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+score.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+shadow.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+sound.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+target.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+texture.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+time.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+title.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+tutorial.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+ui.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+uigage.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+uitarget.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+uioperation.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+xfile.obj : warning LNK4020: 'c:\users\student\desktop\garbage()\garbage\polygon++003\release\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\FirstDirectX001.exe
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\FirstDirectX001.pdb (Full PDB)

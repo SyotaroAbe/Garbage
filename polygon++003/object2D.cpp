@@ -12,6 +12,14 @@
 #include "texture.h"
 
 //===============================================
+// マクロ定義
+//===============================================
+#define MAX_DIFF			(1.0f)		// 最大補正値
+#define TRUE_DIFF			(3.0f)		// 補正完了値
+#define MAX_BRIGHTNESS		(1.0f)		// 最大明るさ
+#define MIN_BRIGHTNESS		(0.0f)		// 最小明るさ
+
+//===============================================
 // コンストラクタ（デフォルト）
 //===============================================
 CObject2D::CObject2D() : CObject(3)
@@ -27,6 +35,8 @@ CObject2D::CObject2D() : CObject(3)
 	m_fLength = 0.0f;
 	m_fSizeX = 0.0f;
 	m_fSizeY = 0.0f;
+	m_fBrightness = 0.0f;
+	m_bFlash = false;
 }
 
 //===============================================
@@ -45,6 +55,8 @@ CObject2D::CObject2D(int nPriority) : CObject(nPriority)
 	m_fLength = 0.0f;
 	m_fSizeX = 0.0f;
 	m_fSizeY = 0.0f;
+	m_fBrightness = 0.0f;
+	m_bFlash = false;
 }
 
 //===============================================
@@ -316,6 +328,53 @@ void CObject2D::UpdateTex(const float fTexU, const float fSubU, const float fAdd
 }
 
 //===============================================
+// 位置補正処理
+//===============================================
+bool CObject2D::RevisionPos(const D3DXVECTOR3 pos, float fMalti, bool bWidth)
+{
+	VERTEX_2D *pVtx;	// 頂点情報へのポインタ
+
+	if (fMalti >= MAX_DIFF)
+	{// 補正値が一定値を超えた
+		fMalti = MAX_DIFF;
+	}
+
+	if (bWidth == false && pos.y + TRUE_DIFF >= m_pos.y && pos.y - TRUE_DIFF <= m_pos.y)
+	{// 補正完了
+		return true;
+	}
+	else if (bWidth == true && pos.x + TRUE_DIFF >= m_pos.x && pos.x - TRUE_DIFF <= m_pos.x)
+	{// 補正完了
+		return true;
+	}
+
+	// 目的のサイズまでの差分を計算
+	D3DXVECTOR3 posDiff = pos - m_pos;
+
+	// サイズの補正
+	m_pos.x += posDiff.x * fMalti;
+	m_pos.y += posDiff.y * fMalti;
+
+	// 頂点バッファをロックし頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x + sinf(m_rot.x + (D3DX_PI + m_fAngle)) * m_fLength,
+		m_pos.y + cosf(m_rot.y + (D3DX_PI + m_fAngle)) * m_fLength, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + sinf(m_rot.x + (D3DX_PI - m_fAngle)) * m_fLength,
+		m_pos.y + cosf(m_rot.y + (D3DX_PI - m_fAngle)) * m_fLength, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x + sinf(m_rot.x + (-m_fAngle)) * m_fLength,
+		m_pos.y + cosf(m_rot.y + (-m_fAngle)) * m_fLength, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + sinf(m_rot.x + (m_fAngle)) * m_fLength,
+		m_pos.y + cosf(m_rot.y + (m_fAngle)) * m_fLength, 0.0f);
+
+	// 頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+
+	return false;
+}
+
+//===============================================
 // エフェクトの描画処理
 //===============================================
 void CObject2D::DrawEffect(D3DXCOLOR col)
@@ -357,6 +416,47 @@ void CObject2D::DrawEffect(D3DXCOLOR col)
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+}
+
+//===============================================
+// 点滅処理
+//===============================================
+void CObject2D::Brightness(float fBrightness)
+{
+	VERTEX_2D *pVtx;	// 頂点情報へのポインタ
+	D3DXCOLOR colDiff = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+	if (m_bFlash == false)
+	{
+		m_fBrightness -= fBrightness;	// 明るさを減算
+	}
+	else
+	{
+		m_fBrightness += fBrightness;	// 明るさを加算
+	}
+
+	if (m_fBrightness > MAX_DIFF)
+	{// 値が一定値を超えた
+		m_fBrightness = MAX_DIFF;
+		m_bFlash = false;
+	}
+	else if (m_fBrightness < 0.0f)
+	{// 値が一定値を超えた
+		m_fBrightness = 0.0f;
+		m_bFlash = true;
+	}
+
+	// 頂点バッファをロックし頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラーの設定
+	pVtx[0].col = D3DXCOLOR(m_fBrightness, m_fBrightness, m_fBrightness, m_fBrightness);
+	pVtx[1].col = D3DXCOLOR(m_fBrightness, m_fBrightness, m_fBrightness, m_fBrightness);
+	pVtx[2].col = D3DXCOLOR(m_fBrightness, m_fBrightness, m_fBrightness, m_fBrightness);
+	pVtx[3].col = D3DXCOLOR(m_fBrightness, m_fBrightness, m_fBrightness, m_fBrightness);
+
+	// 頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
 }
 
 //===============================================

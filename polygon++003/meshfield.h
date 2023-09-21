@@ -91,11 +91,13 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void TurnInput(DESTINATION destination);
 
 	TYPE GetType(void) { return m_type; }
+	int GetNumAll(void) { return m_nNumAll; }
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
 	static char m_aFileName[TYPE_MAX][MAX_NAME];	// テクスチャファイル名を保存
 	static int m_nIdxTexture[TYPE_MAX];				// 使用するテクスチャの番号
 	static TYPE m_aType[MAX_FIELD];					// 床の種類
+	static int m_nNumAll;							// 総数
 
 	D3DXVECTOR3 m_PosMin;		// 位置の最小値
 	D3DXVECTOR3 m_PosMax;		// 位置の最大値

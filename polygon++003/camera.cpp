@@ -12,6 +12,7 @@
 #include "player.h"
 #include "object.h"
 #include "game.h"
+#include "debugproc.h"
 
 //===============================================
 // マクロ定義
@@ -64,7 +65,7 @@ HRESULT CCamera::Init(void)
 		m_posV = D3DXVECTOR3(-2500.0f, 7400.0f, -1800.0f);
 		m_posR = D3DXVECTOR3(-2500.0f, 0.0f, -2500.0f);
 	}
-	else if (CScene::GetMode() == CScene::MODE_TUTORIAL)
+	else if (CScene::GetMode() == CScene::MODE_TUTORIAL || CScene::GetMode() == CScene::MODE_TITLE)
 	{
 		m_posV = D3DXVECTOR3(0.0f, HIGHT_CAMERA, 300.0f);
 		m_posR = D3DXVECTOR3(0.0f, 0.0f, -400.0f);
@@ -280,7 +281,49 @@ void CCamera::Update(void)
 			m_rot.y += D3DX_PI * ROT_DIFF_PI;
 		}
 	}
+	if (CScene::GetMode() == CScene::MODE_TITLE)
+	{
+		// カメラの追従
+		// 目的の視点・注視点を設定
+		m_posRDest.x = playerPos.x + sinf(playerRot.y) * POSR_DEST;
+		m_posRDest.y = playerPos.y;
+		m_posRDest.z = playerPos.z + cosf(playerRot.y) * POSR_DEST;
+		m_posVDest.x = playerPos.x + sinf(m_rot.y) * LENGTH_CAMERA;
+		m_posVDest.y = playerPos.y;
+		m_posVDest.z = playerPos.z + cosf(m_rot.y) * LENGTH_CAMERA;
 
+		// 移動量を更新（減衰させる）
+		m_posV.x += (m_posVDest.x - m_posV.x) * MOVEV_MINUS;
+		m_posV.z += (m_posVDest.z - m_posV.z) * MOVEV_MINUS;
+		m_posR.x += (m_posRDest.x - m_posR.x) * MOVER_MINUS;
+		m_posR.z += (m_posRDest.z - m_posR.z) * MOVER_MINUS;
+
+		m_rotDest.y = D3DX_PI + (ROT_CAMERA * playerRot.y);
+
+		m_rotDest.y -= m_rot.y;		// 目的の向きまでの差分
+
+									// 角度の値の補正
+		if (m_rotDest.y > D3DX_PI)
+		{
+			m_rotDest.y += -D3DX_PI * ROT_DIFF_PI;
+		}
+		else if (m_rotDest.y < -D3DX_PI)
+		{
+			m_rotDest.y += D3DX_PI * ROT_DIFF_PI;
+		}
+
+		m_rot.y += m_rotDest.y * CAMERA_ROT_SPEED;	// 角度の補正
+
+													// 角度の値の補正
+		if (m_rot.y > D3DX_PI)
+		{
+			m_rot.y += -D3DX_PI * ROT_DIFF_PI;
+		}
+		else if (m_rot.y < -D3DX_PI)
+		{
+			m_rot.y += D3DX_PI * ROT_DIFF_PI;
+		}
+	}
 }
 
 //===============================================

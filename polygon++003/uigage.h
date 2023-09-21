@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "object.h"
+#include "garbage.h"
 
 //===============================================
 // 前方宣言
@@ -49,7 +50,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 
 	void Set(float fGarbage);
 	float Get(void) { return m_fGarbage; }
-	bool GetMax(void);
+	bool GetMax(CGarbage::MODELSIZE size = CGarbage::MODELSIZE_MAX);
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CObject2D *m_apObject2D[TEX_MAX];		// オブジェクト2Dクラスのポインタ

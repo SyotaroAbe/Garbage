@@ -19,8 +19,8 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define CLASS_NAME        "WindowClass"					// ウインドウクラスの名前
-#define WINDOW_NAME       "GarbageSeparation(仮)"		// ウインドウの名前（キャプションに表示）
+#define CLASS_NAME        "WindowClass"			// ウインドウクラスの名前
+#define WINDOW_NAME       "JustSeparation"		// ウインドウの名前（キャプションに表示）
 
 //===============================================
 // プロトタイプ宣言
@@ -154,6 +154,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR IpCmdLine
 		delete pManager;
 		pManager = NULL;
 	}
+
+	//分解能を戻す
+	timeBeginPeriod(1);
 
 	// ウインドウクラスの登録を解除
 	UnregisterClass(CLASS_NAME, wcex.hInstance);

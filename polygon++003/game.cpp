@@ -25,6 +25,7 @@
 #include "debugproc.h"
 #include "sound.h"
 #include "justdust.h"
+#include "fever.h"
 
 //===============================================
 // 静的メンバ変数
@@ -44,6 +45,7 @@ CUiGage *CGame::m_pUiGage = NULL;						// ゴミゲージクラスのポインタ
 CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
 CFileLoad *CGame::m_pFileLoad = NULL;					// ロードクラスのポインタ
 CJustDust *CGame::m_pJustDust = NULL;					// JustDust表示クラスのポインタ
+CFever *CGame::m_pFever = NULL;							// Fever表示クラスのポインタ
 
 bool CGame::m_bPause = false;				// ポーズ状態
 bool CGame::m_bStateReady = false;			// GAMSESTATE_READYかどうか
@@ -251,6 +253,9 @@ void CGame::Update(void)
 		if (m_nCounterState <= 0)
 		{
 			m_state = STATE_FEVER;				// フィーバー状態に設定
+
+			// Feverの生成
+			m_pFever = CFever::Create();
 		}
 		break;
 

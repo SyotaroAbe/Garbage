@@ -10,6 +10,7 @@
 #include "tutorial.h"
 #include "game.h"
 #include "target.h"
+#include "player.h"
 
 //===============================================
 // マクロ定義
@@ -19,6 +20,7 @@
 #define DIFF_SIZE			(500.0f)	// サイズ
 #define TIME_SCALLSIZE		(30)		// サイズ変更時間
 #define SCALL_DIFF			(0.3f)		// サイズの値の補正
+#define TURN_ROT_DIFF		(0.001f)	// 曲がる角度の差分
 
 //===============================================
 // 静的メンバ変数
@@ -107,6 +109,7 @@ void CJustDust::Uninit(void)
 void CJustDust::Update(void)
 {
 	D3DXVECTOR3 posTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// ターゲットの位置
+	D3DXVECTOR3 rotPlayer = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// プレイヤーの向き
 
 	if (CManager::GetMode() == CScene::MODE_TUTORIAL)
 	{// チュートリアル
@@ -115,10 +118,26 @@ void CJustDust::Update(void)
 	else if (CManager::GetMode() == CScene::MODE_GAME)
 	{// ゲーム画面
 		posTarget = CGame::GetTarget()->GetPos();
+		rotPlayer = CGame::GetPlayer()->GetRot();
 	}
 
 	// オブジェクト2Dの位置設定処理
-	CObjectBillboard::SetPos(D3DXVECTOR3(posTarget.x - 150.0f, posTarget.y + 50.0f, posTarget.z));
+	if (rotPlayer.y <= TURN_ROT_DIFF && rotPlayer.y >= -TURN_ROT_DIFF)
+	{// 初期位置から上向き
+		CObjectBillboard::SetPos(D3DXVECTOR3(posTarget.x - 150.0f, posTarget.y + 50.0f, posTarget.z));
+	}
+	else if (rotPlayer.y <= D3DX_PI * ROT_LEFT + TURN_ROT_DIFF && rotPlayer.y >= D3DX_PI * ROT_LEFT - TURN_ROT_DIFF)
+	{// 初期位置から左向き
+		CObjectBillboard::SetPos(D3DXVECTOR3(posTarget.x, posTarget.y + 50.0f, posTarget.z - 150.0f));
+	}
+	else if (rotPlayer.y <= D3DX_PI * ROT_RIGHT + TURN_ROT_DIFF && rotPlayer.y >= D3DX_PI * ROT_RIGHT - TURN_ROT_DIFF)
+	{// 初期位置から右向き
+		CObjectBillboard::SetPos(D3DXVECTOR3(posTarget.x, posTarget.y + 50.0f, posTarget.z + 150.0f));
+	}
+	else if (rotPlayer.y <= D3DX_PI + TURN_ROT_DIFF && rotPlayer.y >= D3DX_PI - TURN_ROT_DIFF)
+	{// 初期位置から下向き
+		CObjectBillboard::SetPos(D3DXVECTOR3(posTarget.x + 150.0f, posTarget.y + 50.0f, posTarget.z));
+	}
 
 	if (m_nTime > TIME_SCALLSIZE)
 	{

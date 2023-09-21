@@ -14,21 +14,21 @@ NUM_TEXTURE = 15
 #------------------------------------------------------------------------------
 # テクスチャファイル名
 #------------------------------------------------------------------------------
-TEXTURE_FILENAME = data//TEXTURE//field000.jpg			# [0]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field001.jpg			# [1]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field002.jpg			# [2]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field003.jpg			# [3]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field004.jpg			# [4]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field005.jpg			# [5]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field006.jpg			# [6]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field007.jpg			# [7]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field008.jpg			# [8]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field009.jpg			# [9]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field010.jpg			# [10]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field011.jpg			# [11]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field012.jpg			# [12]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field013.jpg			# [13]床テクスチャ
-TEXTURE_FILENAME = data//TEXTURE//field014.jpg			# [14]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field000.jpg			# [0]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field001.jpg			# [1]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field002.jpg			# [2]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field003.jpg			# [3]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field004.jpg			# [4]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field005.jpg			# [5]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field006.jpg			# [6]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field007.jpg			# [7]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field008.jpg			# [8]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field009.jpg			# [9]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field010.jpg			# [10]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field011.jpg			# [11]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field012.jpg			# [12]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field013.jpg			# [13]床テクスチャ
+TEXTURE_FILENAME = data\\TEXTURE\\field014.jpg			# [14]床テクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数

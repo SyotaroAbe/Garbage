@@ -290,6 +290,30 @@ void CGarbage::Update(void)
 			(m_pos.x <= CGame::GetTarget()->GetPos().x + TARGET_SIZEX + TARGET_SIZEX && m_pos.x >= CGame::GetTarget()->GetPos().x - TARGET_SIZEX - TARGET_SIZEX
 				&& m_pos.z <= CGame::GetTarget()->GetPos().z + TARGET_SIZEY + TARGET_SIZEY && m_pos.z >= CGame::GetTarget()->GetPos().z - TARGET_SIZEY - TARGET_SIZEY))
 		{// ターゲットの範囲内に入った
+			if ((CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetUiGage()->GetMax(m_size) == true)
+				|| (CManager::GetMode() == CScene::MODE_GAME && CGame::GetUiGage()->GetMax(m_size) == true))
+			{
+				if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+				{// チュートリアル
+					CTutorial::GetTarget()->SetMaxGage(true);
+				}
+				else if (CManager::GetMode() == CScene::MODE_GAME)
+				{// ゲーム
+					CGame::GetTarget()->SetMaxGage(true);
+				}
+			}
+			else
+			{
+				if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+				{// チュートリアル
+					CTutorial::GetTarget()->SetMaxGage(false);
+				}
+				else if (CManager::GetMode() == CScene::MODE_GAME)
+				{// ゲーム
+					CGame::GetTarget()->SetMaxGage(false);
+				}
+			}
+
 			if (CManager::GetMode() == CScene::MODE_TUTORIAL &&(CTutorial::GetTarget()->GetState() != SEPARATION_NONE && CTutorial::GetTarget()->GetWithinRange() == true)
 				|| CManager::GetMode() == CScene::MODE_GAME && (CGame::GetTarget()->GetState() != SEPARATION_NONE && CGame::GetTarget()->GetWithinRange() == true))
 			{// 分別の設定がされている
@@ -340,16 +364,16 @@ void CGarbage::Update(void)
 			|| (m_rockonType == SEPARATION_NONFLAMMABLE && (CManager::GetKeyboardInput()->GetRelease(DIK_LEFT) == true || CManager::GetInputGamePad()->GetRelease(CInputGamePad::BUTTON_X, 0) == true))
 			|| (m_rockonType == SEPARATION_RECYCLABLE && (CManager::GetKeyboardInput()->GetRelease(DIK_UP) == true || CManager::GetInputGamePad()->GetRelease(CInputGamePad::BUTTON_Y, 0) == true)))
 		{// キーを離した
-			if ((CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetUiGage()->GetMax() == false)
-				|| (CManager::GetMode() == CScene::MODE_GAME && CGame::GetUiGage()->GetMax() == false))
+			if ((CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetUiGage()->GetMax(m_size) == false)
+				|| (CManager::GetMode() == CScene::MODE_GAME && CGame::GetUiGage()->GetMax(m_size) == false))
 			{// ゴミゲージが最大じゃない
 				if ((PlayerRot.y <= D3DX_PI * ROT_UP + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_UP - TURN_ROT_DIFF && m_pos.z < PlayerPos.z) 
 					|| (PlayerRot.y <= D3DX_PI * ROT_DOWN + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_DOWN - TURN_ROT_DIFF && m_pos.z > PlayerPos.z)
 					|| (PlayerRot.y <= D3DX_PI * ROT_RIGHT + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_RIGHT - TURN_ROT_DIFF && m_pos.x < PlayerPos.x)
 					|| (PlayerRot.y <= D3DX_PI * ROT_LEFT + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_LEFT - TURN_ROT_DIFF && m_pos.x > PlayerPos.x))
 				{// ロックオンしたゴミが画面内にある
-					if (CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetTarget()->GetFlameJust() < FLAME_JUSTDUST && CTutorial::GetTarget()->GetFlameJust() >= 0
-						|| CManager::GetMode() == CScene::MODE_GAME && CGame::GetTarget()->GetFlameJust() < FLAME_JUSTDUST && CTutorial::GetTarget()->GetFlameJust() >= 0)
+					if ((CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetTarget()->GetFlameJust() < FLAME_JUSTDUST && CTutorial::GetTarget()->GetFlameJust() >= 0)
+						|| (CManager::GetMode() == CScene::MODE_GAME && CGame::GetTarget()->GetFlameJust() < FLAME_JUSTDUST && CGame::GetTarget()->GetFlameJust() >= 0))
 					{// ジャストタイミング
 						m_bJustDust = true;		// JustDustに設定
 					}
@@ -363,7 +387,7 @@ void CGarbage::Update(void)
 				}
 			}
 			else
-			{
+			{// ゲージが最大を超えてしまう
 				m_state = STATE_NORMAL;		// 通常状態へ戻す
 			}
 		}

@@ -50,6 +50,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void Set(const D3DXVECTOR3 pos, const D3DXVECTOR3 move);
 	void SetState(CGarbage::SEPARATION state);
 	static CGarbage::SEPARATION GetState(void) { return m_state; }
+	void SetMaxGage(bool bMaxGage);
 	bool GetWithinRange(void) { return m_bWithinRange; }
 	int GetFlameJust(void) { return m_nCntFlameJust; }
 
@@ -62,6 +63,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	D3DXVECTOR3 m_LocalPos;				// 初期位置から見ての距離
 	D3DXVECTOR3 m_posDest;				// 目的の位置
 	bool m_bWithinRange;				// ゴミがターゲットの範囲内
+	bool m_bMaxGage;					// ゲージが最大か
 	float m_fMaltiRivision;				// 位置補正値
 	float m_fSpeed;						// 移動速度
 	int m_nCntFlameJust;				// ジャストタイミングフレームカウント

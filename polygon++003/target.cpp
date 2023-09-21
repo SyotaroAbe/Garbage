@@ -48,6 +48,7 @@ CTarget::CTarget() : CObjectBillboard(3)
 	m_LocalPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_posDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_bWithinRange = false;
+	m_bMaxGage = false;
 	m_fSpeed = 0.0f;
 	m_fMaltiRivision = 0.0f;
 	m_nCntFlameJust = 0;
@@ -63,6 +64,7 @@ CTarget::CTarget(int nPriority) : CObjectBillboard(nPriority)
 	m_LocalPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_posDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_bWithinRange = false;
+	m_bMaxGage = false;
 	m_fSpeed = 0.0f;
 	m_fMaltiRivision = 0.0f;
 	m_nCntFlameJust = 0;
@@ -190,8 +192,16 @@ void CTarget::Update(void)
 		// 縮小処理
 		CObjectBillboard::ScalingSize(DIFF_SIZE);
 
-		// オブジェクトビルボードの色設定
-		CObjectBillboard::SetCol(D3DXCOLOR(0.2f, 1.0f, 0.2f, 1.0f));	// 緑
+		if (m_bMaxGage == false)
+		{
+			// オブジェクトビルボードの色設定
+			CObjectBillboard::SetCol(D3DXCOLOR(0.2f, 1.0f, 0.2f, 1.0f));	// 緑
+		}
+		else
+		{
+			// オブジェクトビルボードの色設定
+			CObjectBillboard::SetCol(D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f));	// 灰色
+		}
 	}
 	else
 	{
@@ -486,4 +496,12 @@ void CTarget::SetState(CGarbage::SEPARATION state)
 		CObjectBillboard::SetCol(D3DXCOLOR(0.9f, 0.75f, 0.2f, 1.0f));	// 黄色
 		break;
 	}
+}
+
+//===============================================
+// ゲージか最大化の設定処理
+//===============================================
+void CTarget::SetMaxGage(bool bMaxGage)
+{
+	m_bMaxGage = bMaxGage;
 }

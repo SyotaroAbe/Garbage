@@ -322,7 +322,7 @@ void CManager::Update(void)
 		m_pRenderer->Update();
 
 		if ((CManager::GetMode() == CScene::MODE_GAME && (CGame::GetPauseState() == false || CGame::GetPauseCamera() == true))
-			|| CManager::GetMode() == CScene::MODE_TUTORIAL)
+			|| CManager::GetMode() == CScene::MODE_TUTORIAL || CManager::GetMode() == CScene::MODE_TITLE)
 		{// ポーズ状態
 			// カメラの更新処理
 			m_pCamera->Update();

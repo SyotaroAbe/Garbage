@@ -278,8 +278,8 @@ void CUiOperation::Update(void)
 					{// ゴミステーション
 						if ((CManager::GetKeyboardInput()->GetTrigger(DIK_SPACE) == true
 							|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true)
-							&& pObject->GetPos().x <= CTutorial::GetTarget()->GetPos().x + DUMPSTER_LENTH && pObject->GetPos().x >= CTutorial::GetTarget()->GetPos().x - DUMPSTER_LENTH
-							&& pObject->GetPos().z <= CTutorial::GetTarget()->GetPos().z + DUMPSTER_LENTH && pObject->GetPos().z >= CTutorial::GetTarget()->GetPos().z - DUMPSTER_LENTH)
+							&& pObject->GetPos().x <= CTutorial::GetTarget()->GetPos().x + DUMPSTER_LENTH + TARGET_SIZEX && pObject->GetPos().x >= CTutorial::GetTarget()->GetPos().x - DUMPSTER_LENTH - TARGET_SIZEX
+							&& pObject->GetPos().z <= CTutorial::GetTarget()->GetPos().z + DUMPSTER_LENTH + TARGET_SIZEX && pObject->GetPos().z >= CTutorial::GetTarget()->GetPos().z - DUMPSTER_LENTH - TARGET_SIZEX)
 						{// ゴミステーションを使った
 							m_nProgress++;		// 進捗を進める
 

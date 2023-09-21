@@ -11,6 +11,8 @@
 #include "fade.h"
 #include "ranking.h"
 #include "rankIn.h"
+#include "manager.h"
+#include "sound.h"
 
 //===============================================
 // 静的メンバ変数
@@ -81,6 +83,10 @@ void CResult::Update(void)
 		if (m_bFade == false)
 		{// フェードバグ防止
 			CRenderer::GetFade()->Set(CScene::MODE_TITLE);	// ゲームタイトル画面へ移行
+
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_TITLE_ENTER);
+
 			m_bFade = true;
 		}
 	}

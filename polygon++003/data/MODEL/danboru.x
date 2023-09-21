@@ -176,9 +176,6 @@ Mesh {
    5.000000;
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
-   TextureFilename {
-    "C:\\Users\\student\\Documents\\3D表\現Ⅱ\\MODEL\\_段ボール\\Paper02.jpg";
-   }
   }
  }
  MeshNormals {

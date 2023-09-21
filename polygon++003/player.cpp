@@ -25,6 +25,8 @@
 #include "tutorial.h"
 #include "time.h"
 #include "target.h"
+#include "sound.h"
+#include "title.h"
 
 //===============================================
 // マクロ定義
@@ -128,7 +130,11 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	m_pMotion->Init();
 
 	// モデルの総数
-	if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+	if (CManager::GetMode() == CScene::MODE_TITLE)
+	{
+		m_nNumModel = CTitle::GetLoad()->GetNumModel();
+	}
+	else if (CManager::GetMode() == CScene::MODE_TUTORIAL)
 	{
 		m_nNumModel = CTutorial::GetLoad()->GetNumModel();
 	}
@@ -154,7 +160,13 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-		if (CManager::GetMode() == CScene::MODE_GAME)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
+		{
+			apModelFile[nCntModel] = CTitle::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
+			pos = CTitle::GetLoad()->GetPos(nCntModel);								// 位置の取得
+			rot = CTitle::GetLoad()->GetRot(nCntModel);								// 向きの取得
+		}
+		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
 			apModelFile[nCntModel] = CGame::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
 			pos = CGame::GetLoad()->GetPos(nCntModel);								// 位置の取得
@@ -179,7 +191,11 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	{
 		int nParent = 0;
 
-		if (CManager::GetMode() == CScene::MODE_GAME)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
+		{
+			nParent = CTitle::GetLoad()->GetParent(nCntModel);	// 親を取得
+		}
+		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
 			nParent = CGame::GetLoad()->GetParent(nCntModel);	// 親を取得
 		}
@@ -195,7 +211,11 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	for (int nCntMotion = 0; nCntMotion < MOTIONTYPE_MAX; nCntMotion++)
 	{// モーション数分繰り返す
 		m_pMotion->Set(nCntMotion);
-		if (CManager::GetMode() == CScene::MODE_GAME)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
+		{
+			m_pMotion->SetInfo(CTitle::GetLoad()->GetInfo(nCntMotion));
+		}
+		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
 			m_pMotion->SetInfo(CGame::GetLoad()->GetInfo(nCntMotion));
 		}
@@ -302,10 +322,23 @@ void CPlayer::Update(void)
 					m_turnTypeOld = TURN_NONE;
 				}
 			}
+			else if (CManager::GetMode() == CScene::MODE_TITLE)
+			{
+				//CTitle::GetTarget()->RevisionPos();
+				m_nTurnCounter++;
+
+				if (m_nTurnCounter >= 20)
+				{
+					m_turnTypeOld = TURN_NONE;
+				}
+			}
 		}
 
-		// エフェクトの生成（煙）
-		CParticle::Create(1)->Set(m_pos, CParticle::TYPE_MOVE);
+		if (CManager::GetMode() != CScene::MODE_TITLE)
+		{// タイトルじゃない
+			// エフェクトの生成（煙）
+			CParticle::Create(1)->Set(m_pos, CParticle::TYPE_MOVE);
+		}
 
 		// モーション設定
 		m_pMotion->Set(MOTIONTYPE_MOVE);
@@ -320,6 +353,9 @@ void CPlayer::Update(void)
 		m_turnTypeOld = m_turnType;	// 前回の情報を保存
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
+
+		// サウンドの再生
+		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
 		break;
 
 	case TURN_LEFT:		// 左へ曲がる
@@ -331,6 +367,9 @@ void CPlayer::Update(void)
 		m_turnTypeOld = m_turnType;	// 前回の情報を保存
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
+
+		// サウンドの再生
+		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
 		break;
 
 	case TURN_BACK:		// 折り返し
@@ -342,6 +381,9 @@ void CPlayer::Update(void)
 		m_turnTypeOld = m_turnType;	// 前回の情報を保存
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
+
+		// サウンドの再生
+		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
 		break;
 	}
 
@@ -358,7 +400,7 @@ void CPlayer::Update(void)
 		m_nParticleCounter = 0;		// パーティクル発生させる
 	}
 
-	if (m_nParticleCounter < COUNT_PARTICLE)
+	if (m_nParticleCounter < COUNT_PARTICLE && CManager::GetMode() != CScene::MODE_TITLE)
 	{// パーティクル発生時間に達していない
 		CParticle::Create(1)->Set(m_pos, CParticle::TYPE_CURVE);		// パーティクルの生成
 		m_nParticleCounter++;											// 発生時間をカウントアップ
@@ -422,11 +464,15 @@ void CPlayer::Update(void)
 	CManager::GetDebugProc()->Print(" プレイヤーの位置：（%f, %f, %f）\n", m_pos.x, m_pos.y, m_pos.z);
 	CManager::GetDebugProc()->Print(" プレイヤーの移動速度：%f\n", m_speed);
 	CManager::GetDebugProc()->Print(" プレイヤーの向き：%f\n\n", m_rot.y);
-
+	
 	CManager::GetDebugProc()->Print(" カメラの向き：%f\n", CManager::GetCamera()->GetRot().y);
 	CManager::GetDebugProc()->Print(" 視点：（%f, %f, %f）\n", CManager::GetCamera()->GetPosV().x, CManager::GetCamera()->GetPosV().y, CManager::GetCamera()->GetPosV().z);
 	CManager::GetDebugProc()->Print(" 注視点：（%f, %f, %f）\n", CManager::GetCamera()->GetPosR().x, CManager::GetCamera()->GetPosR().y, CManager::GetCamera()->GetPosR().z);
 	CManager::GetDebugProc()->Print(" ゴミの総数：%d\n", CManager::GetGarbage()->GetNumAll());
+	if (CManager::GetMode() == CScene::MODE_GAME)
+	{
+		CManager::GetDebugProc()->Print(" 床の総数：%d\n", CGame::GetMeshField()->GetNumAll());
+	}
 }
 
 //===============================================
@@ -434,31 +480,34 @@ void CPlayer::Update(void)
 //===============================================
 void CPlayer::Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();	// デバイスの取得
-	D3DXMATRIX mtxRot, mtxTrans;										// 計算用マトリックス
+	if (CManager::GetMode() != CScene::MODE_TITLE)
+	{// タイトルじゃない
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();	// デバイスの取得
+		D3DXMATRIX mtxRot, mtxTrans;										// 計算用マトリックス
 
-	// ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&m_mtxWorld);
+		// ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
 
-	// 向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+		// 向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-	// 位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+		// 位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-	// ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+		// ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-	// モデルの描画（全パーツ）
-	for (int nCntModel = 0; nCntModel < m_nNumModel; nCntModel++)
-	{
-		// モデルの描画処理
-		m_apModel[nCntModel]->Draw();
+		// モデルの描画（全パーツ）
+		for (int nCntModel = 0; nCntModel < m_nNumModel; nCntModel++)
+		{
+			// モデルの描画処理
+			m_apModel[nCntModel]->Draw();
 
-		// モデルの影の描画処理
-		m_apModel[nCntModel]->DrawShadowmtx();
+			// モデルの影の描画処理
+			m_apModel[nCntModel]->DrawShadowmtx();
+		}
 	}
 }
 

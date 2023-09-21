@@ -14,6 +14,7 @@
 #include "game.h"
 #include "tutorial.h"
 #include "target.h"
+#include "title.h"
 
 //===============================================
 // マクロ定義
@@ -86,6 +87,7 @@
 char CMeshField::m_aFileName[TYPE_MAX][MAX_NAME] = {};	// テクスチャファイル名を保存
 int CMeshField::m_nIdxTexture[TYPE_MAX] = {};			// 使用するテクスチャの番号
 CMeshField::TYPE CMeshField::m_aType[MAX_FIELD] = {};	// 床の種類
+int CMeshField::m_nNumAll = 0;							// 総数
 
 //===============================================
 // コンストラクタ
@@ -97,6 +99,8 @@ CMeshField::CMeshField() : CObjectMesh(3)
 	m_destination = DESTINATION_NONE;
 	m_nTimeFever = 0;
 	m_nRandFever = 0;
+
+	m_nNumAll++;
 }
 
 //===============================================
@@ -109,6 +113,8 @@ CMeshField::CMeshField(int nPriority) : CObjectMesh(nPriority)
 	m_destination = DESTINATION_NONE;
 	m_nTimeFever = 0;
 	m_nRandFever = 0;
+
+	m_nNumAll++;
 }
 
 //===============================================
@@ -116,7 +122,7 @@ CMeshField::CMeshField(int nPriority) : CObjectMesh(nPriority)
 //===============================================
 CMeshField::~CMeshField()
 {
-
+	m_nNumAll--;
 }
 
 //===============================================
@@ -184,7 +190,7 @@ void CMeshField::load(HWND hWnd)
 		MessageBox(hWnd, "ファイルの読み込みに失敗！", "警告！", MB_ICONWARNING);	// 警告表示
 	}
 
-	if (CManager::GetMode() == CScene::MODE_GAME)
+	if (CManager::GetMode() == CScene::MODE_GAME || CManager::GetMode() == CScene::MODE_TITLE)
 	{// モードがゲーム
 		// マップランダム自動生成
 		RandArrange();
@@ -1878,11 +1884,11 @@ void CMeshField::Update(void)
 	D3DXVECTOR3 PlayerPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 PlayerRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+	if (CManager::GetMode() == CScene::MODE_TITLE)
 	{// チュートリアル
 		// プレイヤーの情報取得
-		PlayerPos = CTutorial::GetPlayer()->GetPos();	// 位置
-		PlayerRot = CTutorial::GetPlayer()->GetRot();	// 向き
+		PlayerPos = CTitle::GetPlayer()->GetPos();	// 位置
+		PlayerRot = CTitle::GetPlayer()->GetRot();	// 向き
 	}
 	else if (CManager::GetMode() == CScene::MODE_GAME)
 	{// ゲームモード
@@ -2295,9 +2301,9 @@ void CMeshField::TurnInfo(float fRot)
 	switch (m_type)
 	{
 	case TYPE_STRAIGHT_H:		// 縦直線
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2306,9 +2312,9 @@ void CMeshField::TurnInfo(float fRot)
 		break;
 
 	case TYPE_STRAIGHT_W:		// 横直線
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2319,9 +2325,9 @@ void CMeshField::TurnInfo(float fRot)
 	case TYPE_CURVE_UPLEFT:		// カーブ（左上角）
 		if (fRot == D3DX_PI * ROT_DOWN)
 		{// 初期位置から見て上へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2330,9 +2336,9 @@ void CMeshField::TurnInfo(float fRot)
 		}
 		else if (fRot == D3DX_PI * ROT_RIGHT)
 		{// 初期位置から見て左へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2344,9 +2350,9 @@ void CMeshField::TurnInfo(float fRot)
 	case TYPE_CURVE_UPRIGHT:	// カーブ（右上角）
 		if (fRot == D3DX_PI * ROT_DOWN)
 		{// 初期位置から見て上へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2355,9 +2361,9 @@ void CMeshField::TurnInfo(float fRot)
 		}
 		else if (fRot == D3DX_PI * ROT_LEFT)
 		{// 初期位置から見て右へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2369,9 +2375,9 @@ void CMeshField::TurnInfo(float fRot)
 	case TYPE_CURVE_DOWNRIGHT:	// カーブ（右下角）
 		if (fRot == D3DX_PI * ROT_UP)
 		{// 初期位置から見て上へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2380,9 +2386,9 @@ void CMeshField::TurnInfo(float fRot)
 		}
 		else if (fRot == D3DX_PI * ROT_LEFT)
 		{// 初期位置から見て右へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2394,9 +2400,9 @@ void CMeshField::TurnInfo(float fRot)
 	case TYPE_CURVE_DOWNLEFT:	// カーブ（左下角）
 		if (fRot == D3DX_PI * ROT_UP)
 		{// 初期位置から見て下へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2405,9 +2411,9 @@ void CMeshField::TurnInfo(float fRot)
 		}
 		else if (fRot == D3DX_PI * ROT_RIGHT)
 		{// 初期位置から見て左へ侵入
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2494,9 +2500,9 @@ void CMeshField::TurnInfo(float fRot)
 		break;
 
 	case TYPE_DEADEND_UP:		// 行き止まり（上）
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2505,9 +2511,9 @@ void CMeshField::TurnInfo(float fRot)
 		break;
 
 	case TYPE_DEADEND_RIGHT:	// 行き止まり（右）
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2516,9 +2522,9 @@ void CMeshField::TurnInfo(float fRot)
 		break;
 
 	case TYPE_DEADEND_DOWN:		// 行き止まり（下）
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2527,9 +2533,9 @@ void CMeshField::TurnInfo(float fRot)
 		break;
 
 	case TYPE_DEADEND_LEFT:		// 行き止まり（左）
-		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		if (CManager::GetMode() == CScene::MODE_TITLE)
 		{
-			CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
+			CTitle::GetPlayer()->SetTurn(CPlayer::TURN_BACK);		// 折り返し
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
 		{
@@ -2549,9 +2555,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 	{// Aキー入力
 		if (destination == DESTINATION_STRAIGHT_CURVE || destination == DESTINATION_STRAIGHT_LEFT || destination == DESTINATION_CURVE || destination == DESTINATION_LEFT)
 		{// 左に曲がれる
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);		// 左へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);		// 左へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2564,9 +2570,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 	{// Dキー入力
 		if (destination == DESTINATION_STRAIGHT_CURVE || destination == DESTINATION_STRAIGHT_RIGHT || destination == DESTINATION_CURVE || destination == DESTINATION_RIGHT)
 		{// 右に曲がれる
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2579,9 +2585,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 		if (destination == DESTINATION_STRAIGHT_CURVE || destination == DESTINATION_STRAIGHT
 			|| destination == DESTINATION_STRAIGHT_RIGHT || destination == DESTINATION_STRAIGHT_LEFT)
 		{// 真っすぐ進める
-			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			if (CManager::GetMode() == CScene::MODE_TITLE)
 			{
-				CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
+				CTitle::GetPlayer()->SetTurn(CPlayer::TURN_NONE);		// まがらない
 			}
 			else if (CManager::GetMode() == CScene::MODE_GAME)
 			{
@@ -2593,9 +2599,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 			switch (destination)
 			{
 			case DESTINATION_LEFT:		// 真っすぐいけないが左には曲がれる
-				if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+				if (CManager::GetMode() == CScene::MODE_TITLE)
 				{
-					CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);		// 左へ曲がる
+					CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);		// 左へ曲がる
 				}
 				else if (CManager::GetMode() == CScene::MODE_GAME)
 				{
@@ -2604,9 +2610,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 				break;
 
 			case DESTINATION_RIGHT:		// 真っすぐいけないが右には曲がれる
-				if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+				if (CManager::GetMode() == CScene::MODE_TITLE)
 				{
-					CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+					CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 				}
 				else if (CManager::GetMode() == CScene::MODE_GAME)
 				{
@@ -2622,9 +2628,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 				switch (nRand)
 				{
 				case CPlayer::TURN_RIGHT:		// 右へ曲がる
-					if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+					if (CManager::GetMode() == CScene::MODE_TITLE)
 					{
-						CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
+						CTitle::GetPlayer()->SetTurn(CPlayer::TURN_RIGHT);	// 右へ曲がる
 					}
 					else if (CManager::GetMode() == CScene::MODE_GAME)
 					{
@@ -2633,9 +2639,9 @@ void CMeshField::TurnInput(DESTINATION destination)
 					break;
 
 				case CPlayer::TURN_LEFT:		// 左へ曲がる
-					if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+					if (CManager::GetMode() == CScene::MODE_TITLE)
 					{
-						CTutorial::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
+						CTitle::GetPlayer()->SetTurn(CPlayer::TURN_LEFT);	// 左へ曲がる
 					}
 					else if (CManager::GetMode() == CScene::MODE_GAME)
 					{

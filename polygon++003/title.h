@@ -12,8 +12,12 @@
 //===============================================
 // 前方宣言
 //===============================================
+class CPlayer;
 class CBg;
 class CFade;
+class CFileLoad;
+class CLogo;
+class CPressEnter;
 
 //===============================================
 // タイトル画面クラス
@@ -28,11 +32,20 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	bool GetFade(void) { return m_bFade; }
 
+	static CPlayer *GetPlayer() { return m_pPlayer; }
 	static CBg *GetBg() { return m_pBg; }
+	static CFileLoad *GetLoad() { return m_pFileLoad; }
+	static CLogo *GetLogo() { return m_pLogo; }
+	static CPressEnter *GetPressEnter() { return m_pPressEnter; }
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
-	static CBg *m_pBg;								// 背景クラスのポインタ
+	static CPlayer *m_pPlayer;				// プレイヤークラスのポインタ
+	static CBg *m_pBg;						// 背景クラスのポインタ
+	static CFileLoad *m_pFileLoad;			// ロードクラスのポインタ
+	static CLogo *m_pLogo;					// タイトルロゴ描画クラスのポインタ
+	static CPressEnter *m_pPressEnter;		// PressEnter描画クラスのポインタ
 
 	bool m_bFade;		// フェードに入ったか
 };

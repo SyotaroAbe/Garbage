@@ -217,11 +217,38 @@ void CUiGage::Set(float fGarbage)
 //===============================================
 // ゲージが最大であるか取得処理
 //===============================================
-bool CUiGage::GetMax(void)
+bool CUiGage::GetMax(CGarbage::MODELSIZE size)
 {
-	if (m_fGarbage >= MAX_GARBAGE)
-	{// 最大量を超えた
-		return true;
+	// モデルのサイズ別にゲージ上昇量を変更
+	switch (size)
+	{
+	case CGarbage::MODELSIZE_NORMAL:		// 通常
+		if (m_fGarbage + AMOUNT_OF_RISE_NORMAL > MAX_GARBAGE)
+		{// 最大量を超えた
+			return true;
+		}
+		break;
+
+	case CGarbage::MODELSIZE_SMALL:		// 小さい
+		if (m_fGarbage + AMOUNT_OF_RISE_SMALL > MAX_GARBAGE)
+		{// 最大量を超えた
+			return true;
+		}
+		break;
+
+	case CGarbage::MODELSIZE_BIG:			// 大きい
+		if (m_fGarbage + AMOUNT_OF_RISE_BIG > MAX_GARBAGE)
+		{// 最大量を超えた
+			return true;
+		}
+		break;
+
+	default:
+		if (m_fGarbage >= MAX_GARBAGE)
+		{// 最大量を超えた
+			return true;
+		}
+		break;
 	}
 
 	return false;

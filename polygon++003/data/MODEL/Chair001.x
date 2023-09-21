@@ -689,9 +689,6 @@ Mesh {
    5.500000;
    0.500000;0.500000;0.500000;;
    0.000000;0.000000;0.000000;;
-   TextureFilename {
-    "C:\\Users\\student\\Documents\\3D•\\Œ»\\_3D_TEXTURE_Metasequoia\\metal_001.png";
-   }
   }
  }
  MeshNormals {
