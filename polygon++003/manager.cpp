@@ -23,6 +23,8 @@
 #include "result.h"
 #include "ranking.h"
 #include "tutorial.h"
+#include "meshfield.h"
+#include "fileload.h"
 
 //===============================================
 // 静的メンバ変数
@@ -40,6 +42,7 @@ CXFile *CManager::m_pXFile = NULL;					// Xファイルクラスのポインタ
 CEdit *CManager::m_pEdit = NULL;					// エディットクラスのポインタ
 CGarbage *CManager::m_pGarbage = NULL;				// ゴミクラスのポインタ
 CScene * CManager::m_pScene = NULL;					// シーンクラスのポインタ
+CFileLoad *CManager::m_pFileLoad = NULL;			// ロードクラスのポインタ
 HWND CManager::m_hWnd = NULL;						// ウインドウ保存用
 
 CScene::MODE CScene::m_mode = CScene::MODE_TITLE;	// 現在の画面モード
@@ -203,6 +206,18 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		return -1;
 	}
 
+	// ロードの生成
+	m_pFileLoad = new CFileLoad;
+
+	if (m_pFileLoad != NULL)
+	{// 使用されている
+		// ロードの読み込み処理
+		if (FAILED(m_pFileLoad->Init(hWnd)))
+		{// 読み込み処理が失敗した場合
+			return -1;
+		}
+	}
+
 	// Xファイルの生成
 	m_pXFile = new CXFile;
 
@@ -211,6 +226,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	{// 読み込み処理が失敗した場合
 		return -1;
 	}
+
+	// メッシュフィールドの生成
+	CMeshField::Load(hWnd);
 
 	// シーン生成
 	m_pScene = CScene::Create(hWnd, CScene::MODE_TITLE);
@@ -239,6 +257,9 @@ void CManager::Uninit(void)
 
 	if (m_pRenderer != NULL)
 	{// メモリが使用されている
+		// メッシュフィールドの破棄
+		CMeshField::Unload();
+
 		// キーボード入力の終了処理
 		m_pKeyboardInput->Uninit();
 		delete m_pKeyboardInput;
@@ -273,6 +294,11 @@ void CManager::Uninit(void)
 		m_pTexture->Unload();
 		delete m_pTexture;
 		m_pTexture = NULL;
+
+		// ファイル読み込みの終了処理
+		m_pFileLoad->Uninit();
+		delete m_pFileLoad;
+		m_pFileLoad = NULL;
 
 		// Xファイルの破棄
 		m_pXFile->Unload();

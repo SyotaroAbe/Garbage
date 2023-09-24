@@ -15,8 +15,8 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define SIZE_X				(63.0f)		// 横サイズ
-#define SIZE_Y				(53.0f)		// 縦サイズ
+#define SIZE_X				(72.0f)		// 横サイズ
+#define SIZE_Y				(60.0f)		// 縦サイズ
 #define DIFF_SIZE			(500.0f)	// サイズ
 #define TIME_SCALLSIZE		(30)		// サイズ変更時間
 #define SCALL_DIFF			(0.3f)		// サイズの値の補正

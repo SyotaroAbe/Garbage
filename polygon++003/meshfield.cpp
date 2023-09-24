@@ -15,6 +15,7 @@
 #include "tutorial.h"
 #include "target.h"
 #include "title.h"
+#include "renderer.h"
 
 //===============================================
 // マクロ定義
@@ -41,7 +42,7 @@
 // FEVER
 #define CREATEGABAGETIME_FEVER		(120)									// フィーバー状態時にゴミを生成する時間間隔
 #define TIME_FEVER					(TIME_STATEFEVER + TIME_STATEREADY)		// フィーバー状態へ画面が切り替わるまでの時間
-#define RAND_GABAGEPOSFEVER			(150)									// フィーバー状態時にゴミが生成される確率
+#define RAND_GABAGEPOSFEVER			(140)									// フィーバー状態時にゴミが生成される確率
 #define ADD_RANDFEVER				(1)										// フィーバー状態のランダムの確率上昇数
 
 // マップランダム自動生成
@@ -84,10 +85,11 @@
 //===============================================
 // 静的メンバ変数
 //===============================================
-char CMeshField::m_aFileName[TYPE_MAX][MAX_NAME] = {};	// テクスチャファイル名を保存
-int CMeshField::m_nIdxTexture[TYPE_MAX] = {};			// 使用するテクスチャの番号
-CMeshField::TYPE CMeshField::m_aType[MAX_FIELD] = {};	// 床の種類
-int CMeshField::m_nNumAll = 0;							// 総数
+char CMeshField::m_aFileName[TYPE_MAX][MAX_NAME] = {};		// テクスチャファイル名を保存
+int CMeshField::m_nIdxTexture[TYPE_MAX] = {};				// 使用するテクスチャの番号
+LPDIRECT3DTEXTURE9 CMeshField::m_apTexture[TYPE_MAX] = {};	// テクスチャへのポインタ
+CMeshField::TYPE CMeshField::m_aType[MAX_FIELD] = {};		// 床の種類
+int CMeshField::m_nNumAll = 0;								// 総数
 
 //===============================================
 // コンストラクタ
@@ -156,7 +158,7 @@ CMeshField *CMeshField::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fSizeX, f
 //===============================================
 // 読み込み処理
 //===============================================
-void CMeshField::load(HWND hWnd)
+void CMeshField::Load(HWND hWnd)
 {
 	FILE *pFile;
 
@@ -190,10 +192,26 @@ void CMeshField::load(HWND hWnd)
 		MessageBox(hWnd, "ファイルの読み込みに失敗！", "警告！", MB_ICONWARNING);	// 警告表示
 	}
 
-	if (CManager::GetMode() == CScene::MODE_GAME || CManager::GetMode() == CScene::MODE_TITLE)
-	{// モードがゲーム
-		// マップランダム自動生成
-		RandArrange();
+	//if (CManager::GetMode() == CScene::MODE_GAME || CManager::GetMode() == CScene::MODE_TITLE)
+	//{// モードがゲーム
+	//	// マップランダム自動生成
+	//	RandArrange();
+	//}
+}
+
+//===============================================
+// テクスチャの破棄
+//===============================================
+void CMeshField::Unload(void)
+{
+	//テクスチャの破棄
+	for (int nCntTex = 0; nCntTex < TYPE_MAX; nCntTex++)
+	{
+		if (m_apTexture[nCntTex] != NULL)
+		{
+			m_apTexture[nCntTex]->Release();
+			m_apTexture[nCntTex] = NULL;
+		}
 	}
 }
 
@@ -202,6 +220,8 @@ void CMeshField::load(HWND hWnd)
 //===============================================
 void CMeshField::Script(FILE *pFile)
 {
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();   //デバイスの取得
+
 	char aStr[MAX_NAME] = {};
 	int nCntTexture = 0;				// テクスチャ枚数をカウント
 
@@ -216,6 +236,11 @@ void CMeshField::Script(FILE *pFile)
 
 			// テクスチャの設定
 			m_nIdxTexture[nCntTexture] = CManager::GetTexture()->Regist((const char*)&m_aFileName[nCntTexture][0]);
+
+			// テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice,
+				(const char*)&m_aFileName[nCntTexture][0],
+				&m_apTexture[nCntTexture]);
 
 			nCntTexture++;	// テクスチャ枚数をカウントアップ
 		}

@@ -21,7 +21,6 @@
 #include "fade.h"
 #include "uitarget.h"
 #include "camera.h"
-#include "fileload.h"
 #include "debugproc.h"
 #include "sound.h"
 #include "justdust.h"
@@ -43,7 +42,6 @@ CPause *CGame::m_pPause = NULL;							// ポーズクラスのポインタ
 CUi *CGame::m_pUi = NULL;								// UIクラスのポインタ
 CUiGage *CGame::m_pUiGage = NULL;						// ゴミゲージクラスのポインタ
 CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
-CFileLoad *CGame::m_pFileLoad = NULL;					// ロードクラスのポインタ
 CJustDust *CGame::m_pJustDust = NULL;					// JustDust表示クラスのポインタ
 CFever *CGame::m_pFever = NULL;							// Fever表示クラスのポインタ
 
@@ -79,23 +77,11 @@ HRESULT CGame::Init(HWND hWnd)
 	m_bStateReady = true;		// 待機状態にする
 	m_bPauseCamera = false;
 
-	// ロードの生成
-	m_pFileLoad = new CFileLoad;
-
-	if (m_pFileLoad != NULL)
-	{// 使用されている
-		// ロードの読み込み処理
-		if (FAILED(m_pFileLoad->Init(hWnd)))
-		{// 読み込み処理が失敗した場合
-			return -1;
-		}
-	}
-
 	// カメラの初期化処理
 	CManager::GetCamera()->Init();
 
 	// メッシュフィールドの生成
-	CMeshField::load(hWnd);
+	CMeshField::RandArrange();
 
 	// オブジェクトXファイルの生成
 	CObjectX::Load(hWnd);
@@ -111,6 +97,7 @@ HRESULT CGame::Init(HWND hWnd)
 	m_pDumpster[0] = CDumpster::Create(D3DXVECTOR3(300.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 2);
 	m_pDumpster[1] = CDumpster::Create(D3DXVECTOR3(-5300.0f, 0.0f, -5200.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), 2);
 	m_pDumpster[2] = CDumpster::Create(D3DXVECTOR3(200.0f, 0.0f, -5400.0f), D3DXVECTOR3(0.0f, D3DX_PI, 0.0f), 2);
+	m_pDumpster[3] = CDumpster::Create(D3DXVECTOR3(-3500.0f, 0.0f, -1500.0f), D3DXVECTOR3(0.0f, D3DX_PI, 0.0f), 2);
 
 	// ターゲットの生成
 	m_pTarget = CTarget::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGarbage::SEPARATION_NONE, -1, 5);
@@ -137,6 +124,9 @@ HRESULT CGame::Init(HWND hWnd)
 	m_state = STATE_NORMAL;
 	m_nCounterState = 0;
 
+	// サウンドの再生
+	CManager::GetSound()->Play(CSound::LABEL_BGM_GAME);
+
 	return S_OK;
 }
 
@@ -145,11 +135,6 @@ HRESULT CGame::Init(HWND hWnd)
 //===============================================
 void CGame::Uninit(void)
 {
-	// ファイル読み込みの終了処理
-	m_pFileLoad->Uninit();
-	delete m_pFileLoad;
-	m_pFileLoad = NULL;
-
 	// タイムの終了処理
 	m_pTime->Uninit();
 	delete m_pTime;
@@ -256,6 +241,12 @@ void CGame::Update(void)
 
 			// Feverの生成
 			m_pFever = CFever::Create();
+
+			// サウンドの停止
+			CManager::GetSound()->Stop(CSound::LABEL_BGM_GAME);
+
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_BGM_FEVER);
 		}
 		break;
 

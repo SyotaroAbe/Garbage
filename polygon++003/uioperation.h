@@ -67,7 +67,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 
 	int m_nTypeTex;									// テクスチャの種類
 	bool m_bPressInput[BUTTON_MAX];					// ボタンを押したか
-	float m_fGarbage;								// ゴミの量
+	int m_nGarbage;								// ゴミの量
 };
 
 #endif

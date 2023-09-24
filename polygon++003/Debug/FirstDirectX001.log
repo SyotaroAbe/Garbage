@@ -1,9 +1,4 @@
-﻿  meshfield.cpp
-  コードを生成中...
-  スキップ中... (関連する変更は検出されませんでした)
-  tutorial.cpp
-  title.cpp
-  player.cpp
-  game.cpp
+﻿  model.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.exe
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.pdb (Full PDB)

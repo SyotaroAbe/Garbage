@@ -61,6 +61,21 @@ void CTexture::Unload(void)
 }
 
 //===============================================
+// テクスチャの破棄
+//===============================================
+void CTexture::Delete(int nIdx)
+{
+	if (nIdx >= 0)
+	{
+		if (m_apTexture[nIdx] != NULL)
+		{// 既に読み込まれたテクスチャファイル
+			m_apTexture[nIdx]->Release();
+			m_apTexture[nIdx] = NULL;
+		}
+	}
+}
+
+//===============================================
 // テクスチャの読み込み
 //===============================================
 int CTexture::Regist(const char *pFilename)

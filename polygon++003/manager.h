@@ -25,6 +25,7 @@ class CXFile;
 class CEdit;
 class CGarbage;
 class CFade;
+class CFileLoad;
 
 //===============================================
 // シーンクラス
@@ -92,6 +93,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	static CXFile *GetXFile() { return m_pXFile; }
 	static CEdit *GetEdit() { return m_pEdit; }
 	static CGarbage *GetGarbage() { return m_pGarbage; }
+	static CFileLoad *GetLoad() { return m_pFileLoad; }
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CManager *m_pManager;					// マネージャクラスのポインタ
@@ -107,6 +109,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CEdit *m_pEdit;							// エディットクラスのポインタ
 	static CGarbage *m_pGarbage;					// ゴミクラスのポインタ
 	static CScene *m_pScene;						// シーンクラスのポインタ
+	static CFileLoad *m_pFileLoad;					// ロードクラスのポインタ
 
 	static HWND m_hWnd;						// ウインドウ保存用
 	static CScene::MODE m_mode;				// 現在の画面モード

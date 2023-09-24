@@ -18,10 +18,10 @@
 #include "target.h"
 #include "uigage.h"
 #include "uitarget.h"
-#include "fileload.h"
 #include "dumpster.h"
 #include "uioperation.h"
 #include "justdust.h"
+#include "sound.h"
 
 //===============================================
 // マクロ定義
@@ -45,7 +45,6 @@ CTarget *CTutorial::m_pTarget = NULL;			// ターゲットクラスのポインタ
 CDumpster *CTutorial::m_pDumpster = NULL;		// ゴミステーションクラスのポインタ
 CUiGage *CTutorial::m_pUiGage = NULL;			// ゴミゲージクラスのポインタ
 CUiTarget *CTutorial::m_pUiTarget = NULL;		// ターゲットUIクラスのポインタ
-CFileLoad *CTutorial::m_pFileLoad = NULL;		// ロードクラスのポインタ
 CUiOperation *CTutorial::m_pUiOperation = NULL;	// 操作方法表示クラスのポインタ
 CJustDust *CTutorial::m_pJustDust = NULL;		// JustDust表示クラスのポインタ
 
@@ -72,23 +71,11 @@ CTutorial::~CTutorial()
 //===============================================
 HRESULT CTutorial::Init(HWND hWnd)
 {
-	// ロードの生成
-	m_pFileLoad = new CFileLoad;
-
-	if (m_pFileLoad != NULL)
-	{// 使用されている
-	 // ロードの読み込み処理
-		if (FAILED(m_pFileLoad->Init(hWnd)))
-		{// 読み込み処理が失敗した場合
-			return -1;
-		}
-	}
-
 	// カメラの初期化処理
 	CManager::GetCamera()->Init();
 
 	// メッシュフィールドの生成
-	CMeshField::load(hWnd);
+	//CMeshField::load(hWnd);
 	for (int nCntField = 0; nCntField < FIRSTSET_FIELD; nCntField++)
 	{
 		CMeshField::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f + nCntField * DISTANCE_FIELD), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 500.0f, 500.0f, CMeshField::TYPE_STRAIGHT_H, 3);
@@ -125,6 +112,9 @@ HRESULT CTutorial::Init(HWND hWnd)
 		m_pUiOperation = CUiOperation::Create(nCntOperation, 6);
 	}
 
+	// サウンドの再生
+	CManager::GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
+
 	return S_OK;
 }
 
@@ -133,14 +123,6 @@ HRESULT CTutorial::Init(HWND hWnd)
 //===============================================
 void CTutorial::Uninit(void)
 {
-	if (m_pFileLoad != NULL)
-	{
-		// ファイル読み込みの終了処理
-		m_pFileLoad->Uninit();
-		delete m_pFileLoad;
-		m_pFileLoad = NULL;
-	}
-
 	if (m_pScore != NULL)
 	{
 		// スコアの終了処理

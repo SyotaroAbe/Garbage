@@ -21,9 +21,22 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	// サウンド一覧
 	typedef enum
 	{
-		LABEL_BGM_GAME = 0,		// BGM0
+		LABEL_BGM_TITLE = 0,	// BGM（タイトル）
+		LABEL_BGM_TUTORIAL,		// BGM（チュートリアル）
+		LABEL_BGM_GAME,			// BGM（ゲーム）
+		LABEL_BGM_FEVER,		// BGM（フィーバー）
+		LABEL_BGM_SCOREATTACK,	// BGM（スコアアタック）
+		LABEL_BGM_RANKING,		// BGM（ランキング）
 		LABEL_SE_CURVE,			// カーブ
-		LABEL_SE_CLASH,			// 破壊
+		LABEL_SE_SEPARATION,	// 分別
+		LABEL_SE_JUSTDUST,		// JUSTDUST
+		LABEL_SE_SUCCESS,		// 成功
+		LABEL_SE_FAILURE,		// 失敗
+		LABEL_SE_ROCKON,		// ロックオン
+		LABEL_SE_ABLE,			// ロックオン可
+		LABEL_SE_DISABLE,		// ロックオン不可
+		LABEL_SE_DUMPSTER,		// ゴミステーション
+		LABEL_SE_FEVER,			// フィーバー
 		LABEL_SE_PAUSE,			// ポーズ起動
 		LABEL_SE_PAUSE_CANCEL,	// ポーズキャンセル
 		LABEL_SE_PAUSE_CURSOR,	// ポーズのカーソル移動

@@ -389,6 +389,9 @@ void CGarbage::Update(void)
 			else
 			{// ゲージが最大を超えてしまう
 				m_state = STATE_NORMAL;		// 通常状態へ戻す
+
+				// サウンドの再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_DISABLE);
 			}
 		}
 		//// プレイヤーの上で一定時間静止させる
@@ -493,9 +496,6 @@ void CGarbage::Update(void)
 
 			Separation(m_rockonType);		// 分別処理（スコアに加算される）
 
-			// サウンドの再生
-			//CManager::GetSound()->Play(CSound::LABEL_SE_CLASH);
-
 			m_state = STATE_INPLAYER;		// 描画しない状態にする
 		}
 		break;
@@ -562,6 +562,9 @@ void CGarbage::Update(void)
 			&& m_pos.z >= m_posDest.z - DIFF_DISPOSE)
 		{// 目的の位置になった
 			m_state = STATE_DELETE;			// 破棄
+
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_DUMPSTER);
 		}
 		break;
 
@@ -662,10 +665,16 @@ void CGarbage::Separation(SEPARATION separation)
 			{// JustDustだった場合
 				CTutorial::GetScore()->Add(ADD_SOCREJUST);	// スコア加算
 				CTutorial::GetJustDust()->Set(true);		// JustDust設定
+
+				// サウンドの再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_JUSTDUST);
 			}
 			else
 			{
 				CTutorial::GetScore()->Add(ADD_SCORE);		// スコア加算
+
+				// サウンドの再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_SUCCESS);
 			}
 		}
 		else if (CManager::GetMode() == CScene::MODE_GAME)
@@ -674,10 +683,16 @@ void CGarbage::Separation(SEPARATION separation)
 			{// JustDustだった場合
 				CGame::GetScore()->Add(ADD_SOCREJUST);	// スコア加算
 				CGame::GetJustDust()->Set(true);		// JustDust設定
+
+				// サウンドの再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_JUSTDUST);
 			}
 			else
 			{
 				CGame::GetScore()->Add(ADD_SCORE);		// スコア加算
+
+				// サウンドの再生
+				CManager::GetSound()->Play(CSound::LABEL_SE_SUCCESS);
 			}
 		}
 	}
@@ -692,5 +707,8 @@ void CGarbage::Separation(SEPARATION separation)
 		{
 			CGame::GetScore()->Add(SUB_SCORE);		// スコア減算
 		}
+
+		// サウンドの再生
+		CManager::GetSound()->Play(CSound::LABEL_SE_FAILURE);
 	}
 }

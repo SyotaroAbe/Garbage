@@ -54,7 +54,7 @@ CUiOperation::CUiOperation() : CObject2D(5)
 {
 	// 値のクリア
 	m_nTypeTex = 0;
-	m_fGarbage = 0;
+	m_nGarbage = 0;
 	for (int nCntButton = 0; nCntButton < BUTTON_MAX; nCntButton++)
 	{
 		m_bPressInput[nCntButton] = false;
@@ -68,7 +68,7 @@ CUiOperation::CUiOperation(int nPriority) : CObject2D(nPriority)
 {
 	// 値のクリア
 	m_nTypeTex = 0;
-	m_fGarbage = 0;
+	m_nGarbage = 0;
 	for (int nCntButton = 0; nCntButton < BUTTON_MAX; nCntButton++)
 	{
 		m_bPressInput[nCntButton] = false;
@@ -135,7 +135,7 @@ void CUiOperation::Update(void)
 {
 	if (m_nProgress != TEX_GAGE)
 	{// ゲージ説明じゃないとき
-		m_fGarbage = CTutorial::GetUiGage()->Get();		// ゴミの量を保存
+		m_nGarbage = CTutorial::GetUiGage()->Get();		// ゴミの量を保存
 	}
 
 	if (m_nTypeTex == m_nProgress)
@@ -257,7 +257,7 @@ void CUiOperation::Update(void)
 
 				//// ゴミの量を元に戻す
 				//CTutorial::GetUiGage()->Set(-1.0f);
-				//CTutorial::GetUiGage()->Set(m_fGarbage);
+				//CTutorial::GetUiGage()->Set(m_nGarbage);
 
 				// 終了処理
 				Uninit();

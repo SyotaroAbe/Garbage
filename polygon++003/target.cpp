@@ -18,6 +18,7 @@
 #include "game.h"
 #include "tutorial.h"
 #include "uigage.h"
+#include "sound.h"
 
 //===============================================
 // マクロ定義
@@ -26,7 +27,7 @@
 #define DISTANCE_PLAYER		(-600.0f)		// プレイヤーとの距離
 #define SPEED_TARGET		(23.0f)			// 移動速度
 #define SPEED_TARGETGAGEMAX	(16.0f)			// ゲージが最大時の移動速度
-#define MAX_LENTH			(280.0f)		// 最大位置
+#define MAX_LENTH			(350.0f)		// 最大位置
 #define ROT_DIFF			(0.5f)			// 曲がる角度の差分
 #define POS_DIFF			(0.1f)			// 位置の値の補正
 #define ADD_REVISION		(0.2f)			// 補正率の増加値
@@ -187,6 +188,19 @@ void CTarget::Update(void)
 	// ゴミとターゲットの当たり判定
 	if (WithinRangeGarbage(true) == true || WithinRangeGarbage(false) == true)
 	{// ゴミがターゲットの範囲内
+		if ((m_bWithinRange == false && CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetUiGage()->GetMax() == false)
+			|| (m_bWithinRange == false && CManager::GetMode() == CScene::MODE_GAME && CGame::GetUiGage()->GetMax() == false))
+		{// 最初の1回のみ通る
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_ABLE);
+		}
+		else if (WithinRangeGarbage(true) == true
+			&& ((m_bWithinRange == false && CManager::GetMode() == CScene::MODE_TUTORIAL && CTutorial::GetUiGage()->GetMax() == true)
+			|| (m_bWithinRange == false && CManager::GetMode() == CScene::MODE_GAME && CGame::GetUiGage()->GetMax() == true)))
+		{
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_DISABLE);
+		}
 		m_bWithinRange = true;
 
 		// 縮小処理
@@ -471,6 +485,12 @@ void CTarget::Set(const D3DXVECTOR3 pos, const D3DXVECTOR3 move)
 //===============================================
 void CTarget::SetState(CGarbage::SEPARATION state)
 {
+	if (state != CGarbage::SEPARATION_NONE && m_state != state)
+	{// 状態を切り替えた瞬間のみ鳴らす
+		// サウンドの再生
+		CManager::GetSound()->Play(CSound::LABEL_SE_SEPARATION);
+	}
+
 	m_state = state;
 
 	// 分別ごとに色を設定する

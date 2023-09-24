@@ -33,7 +33,6 @@ class CPause;
 class CUi;
 class CUiGage;
 class CUiTarget;
-class CFileLoad;
 class CJustDust;
 class CFever;
 
@@ -68,7 +67,6 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	static CScore *GetScore() { return m_pScore; }
 	static CGarbage *GetGarbage() { return m_pGarbage; }
 	static CMeshField *GetMeshField() { return m_pMeshField; }
-	static CFileLoad *GetLoad() { return m_pFileLoad; }
 	static CObject3D *GetObject3D() { return m_pObject3D; }
 	static CTarget *GetTarget() { return m_pTarget; }
 	static CDumpster *GetDumpster(int nIdx) { return m_pDumpster[nIdx]; }
@@ -93,7 +91,6 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CScore *m_pScore;						// スコアクラスのポインタ
 	static CGarbage *m_pGarbage;					// ゴミクラスのポインタ
 	static CMeshField *m_pMeshField;				// メッシュフィールドクラスのポインタ
-	static CFileLoad *m_pFileLoad;					// ロードクラスのポインタ
 	static CObject3D *m_pObject3D;					// オブジェクト3Dクラスのポインタ
 	static CTarget *m_pTarget;						// ターゲットクラスのポインタ
 	static CDumpster *m_pDumpster[MAX_DUMPSTER];	// ゴミステーションクラスのポインタ

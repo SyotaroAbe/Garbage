@@ -117,6 +117,15 @@ void CModel::Uninit(void)
 		m_apTexture = NULL;
 	}
 
+	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
+	{
+		if (m_apIdxTexture[nCntMat] != NULL)
+		{// テクスチャファイルが存在する
+			// テクスチャの破棄
+			CManager::GetTexture()->Delete(m_apIdxTexture[nCntMat]);
+		}
+	}
+
 	if (m_apIdxTexture != NULL)
 	{// 使用されている
 		// メモリの開放
@@ -286,7 +295,13 @@ void CModel::BindX(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD dwNumMat)
 		{// テクスチャファイルが存在する
 			// テクスチャの設定
 			m_apIdxTexture[nCntMat] = CManager::GetTexture()->Regist(pMat[nCntMat].pTextureFilename);
-			m_apTexture[nCntMat] = CManager::GetTexture()->GetAddress(m_apIdxTexture[nCntMat]);
+
+			// テクスチャの読み込み
+			D3DXCreateTextureFromFile(pDevice,
+				pMat[nCntMat].pTextureFilename,
+				&m_apTexture[nCntMat]);
+
+			//m_apTexture[nCntMat] = CManager::GetTexture()->GetAddress(m_apIdxTexture[nCntMat]);
 		}
 		else
 		{// 存在しない

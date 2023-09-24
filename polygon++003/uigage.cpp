@@ -14,12 +14,13 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define SIZE_X			(100.0f)			// 横サイズ
-#define SIZE_Y			(100.0f)			// 縦サイズ
-#define POSITION_X		(150.0f)			// 位置X
-#define POSITION_Y		(600.0f)			// 位置Y
-#define MOVE_SHAKE		(2.3f)				// 震えるときの移動量
-#define MAX_MOVESHAKE	(15.0f)				// 最大移動量
+#define SIZE_X				(100.0f)			// 横サイズ
+#define SIZE_Y				(100.0f)			// 縦サイズ
+#define POSITION_X			(150.0f)			// 位置X
+#define POSITION_Y			(600.0f)			// 位置Y
+#define MOVE_SHAKE			(2.3f)				// 震えるときの移動量
+#define MAX_MOVESHAKE		(15.0f)				// 最大移動量
+#define SIZE_REGULATION		(0.05f)				// サイズ調整
 
 //===============================================
 // 静的メンバ変数
@@ -36,7 +37,7 @@ CUiGage::CUiGage()
 	// 値のクリア
 	m_fTexU = 0.0f;
 	m_fTexV = 0.0f;
-	m_fGarbage = 0.0f;
+	m_nGarbage = 0;
 	m_fMoveShake = 0.0f;
 	m_bVMoveShake = false;
 }
@@ -49,7 +50,7 @@ CUiGage::CUiGage(int nPriority)
 	// 値のクリア
 	m_fTexU = 0.0f;
 	m_fTexV = 0.0f;
-	m_fGarbage = 0.0f;
+	m_nGarbage = 0;
 	m_fMoveShake = 0.0f;
 	m_bVMoveShake = false;
 }
@@ -139,7 +140,7 @@ void CUiGage::Update(void)
 	}
 #endif
 
-	if (m_fGarbage == MAX_GARBAGE)
+	if (m_nGarbage >= MAX_GARBAGE)
 	{// ゲージが最大値になった
 		if (m_bVMoveShake == false)
 		{
@@ -170,7 +171,7 @@ void CUiGage::Update(void)
 	{
 		// 位置をリセット
 		m_apObject2D[TEX_OUTSIDE]->SetPos(D3DXVECTOR3(POSITION_X, POSITION_Y, 0.0f));
-		m_apObject2D[TEX_INSIDE]->UpdatePos(D3DXVECTOR3(POSITION_X, 700.0f - m_fGarbage * SIZE_Y, 0.0f), SIZE_X, m_fGarbage * SIZE_Y);
+		m_apObject2D[TEX_INSIDE]->UpdatePos(D3DXVECTOR3(POSITION_X, 700.0f - m_nGarbage * SIZE_REGULATION * SIZE_Y, 0.0f), SIZE_X, m_nGarbage * SIZE_REGULATION * SIZE_Y);
 	}
 }
 
@@ -179,7 +180,7 @@ void CUiGage::Update(void)
 //===============================================
 void CUiGage::Draw(void)
 {
-	if (m_fGarbage == MAX_GARBAGE)
+	if (m_nGarbage >= MAX_GARBAGE)
 	{// ゴミの量が最大
 		// 色の更新処理（赤）
 		m_apObject2D[TEX_INSIDE]->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
@@ -187,31 +188,31 @@ void CUiGage::Draw(void)
 	else
 	{
 		// 色の更新処理（白）
-		m_apObject2D[TEX_INSIDE]->SetCol(D3DXCOLOR(m_fGarbage, 1.0f - m_fGarbage * 0.5f, 1.0f - m_fGarbage, 1.0f));
+		m_apObject2D[TEX_INSIDE]->SetCol(D3DXCOLOR(m_nGarbage * SIZE_REGULATION, 1.0f - m_nGarbage * SIZE_REGULATION * 0.5f, 1.0f - m_nGarbage * SIZE_REGULATION, 1.0f));
 	}
 }
 
 //===============================================
 // 設定処理
 //===============================================
-void CUiGage::Set(float fGarbage)
+void CUiGage::Set(int fGarbage)
 {
-	m_fGarbage += fGarbage;
+	m_nGarbage += fGarbage;
 
-	if (m_fGarbage > MAX_GARBAGE)
+	if (m_nGarbage > MAX_GARBAGE)
 	{// 最大量を超えた
-		m_fGarbage = MAX_GARBAGE;
+		m_nGarbage = MAX_GARBAGE;
 	}
-	else if (m_fGarbage < 0.0f)
+	else if (m_nGarbage < 0)
 	{// 最少量を超えた
-		m_fGarbage = 0.0f;
+		m_nGarbage = 0;
 	}
-
+	
 	// 位置の更新処理
-	m_apObject2D[TEX_INSIDE]->UpdatePos(D3DXVECTOR3(POSITION_X, 700.0f - m_fGarbage * SIZE_Y, 0.0f), SIZE_X, m_fGarbage * SIZE_Y);
+	m_apObject2D[TEX_INSIDE]->UpdatePos(D3DXVECTOR3(POSITION_X, 700.0f - m_nGarbage * SIZE_REGULATION * SIZE_Y, 0.0f), SIZE_X, m_nGarbage * SIZE_REGULATION * SIZE_Y);
 
 	// テクスチャ座標の更新処理
-	m_apObject2D[TEX_INSIDE]->UpdateTex(0.0f, 0.0f, 1.0f, 1.0f, m_fGarbage, 0.0f);
+	m_apObject2D[TEX_INSIDE]->UpdateTex(0.0f, 0.0f, 1.0f, 1.0f, m_nGarbage * SIZE_REGULATION, 0.0f);
 }
 
 //===============================================
@@ -223,28 +224,28 @@ bool CUiGage::GetMax(CGarbage::MODELSIZE size)
 	switch (size)
 	{
 	case CGarbage::MODELSIZE_NORMAL:		// 通常
-		if (m_fGarbage + AMOUNT_OF_RISE_NORMAL > MAX_GARBAGE)
+		if (m_nGarbage + AMOUNT_OF_RISE_NORMAL > MAX_GARBAGE)
 		{// 最大量を超えた
 			return true;
 		}
 		break;
 
 	case CGarbage::MODELSIZE_SMALL:		// 小さい
-		if (m_fGarbage + AMOUNT_OF_RISE_SMALL > MAX_GARBAGE)
+		if (m_nGarbage + AMOUNT_OF_RISE_SMALL > MAX_GARBAGE)
 		{// 最大量を超えた
 			return true;
 		}
 		break;
 
 	case CGarbage::MODELSIZE_BIG:			// 大きい
-		if (m_fGarbage + AMOUNT_OF_RISE_BIG > MAX_GARBAGE)
+		if (m_nGarbage + AMOUNT_OF_RISE_BIG > MAX_GARBAGE)
 		{// 最大量を超えた
 			return true;
 		}
 		break;
 
 	default:
-		if (m_fGarbage >= MAX_GARBAGE)
+		if (m_nGarbage >= MAX_GARBAGE)
 		{// 最大量を超えた
 			return true;
 		}

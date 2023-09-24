@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "player.h"
 #include "debugproc.h"
+#include "sound.h"
 
 //===============================================
 // マクロ定義
@@ -103,6 +104,9 @@ HRESULT CRockon::Init(D3DXVECTOR3 pos)
 
 	// テクスチャの設定
 	m_nIdxTexture = CManager::GetTexture()->Regist("data\\TEXTURE\\target000.png");
+
+	// サウンドの再生
+	CManager::GetSound()->Play(CSound::LABEL_SE_ROCKON);
 
 	return S_OK;
 }

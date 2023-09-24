@@ -17,7 +17,7 @@
 #define MAX_TARGET		(256)			// ターゲットの最大数
 #define TARGET_SIZEX	(45.0f)			// 幅（半分）
 #define TARGET_SIZEY	(45.0f)			// 高さ（半分）
-#define FLAME_JUSTDUST	(5)				// JUSTDUSTの範囲
+#define FLAME_JUSTDUST	(7)				// JUSTDUSTの範囲
 
 //===============================================
 // ターゲットクラス

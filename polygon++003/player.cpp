@@ -130,18 +130,7 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	m_pMotion->Init();
 
 	// モデルの総数
-	if (CManager::GetMode() == CScene::MODE_TITLE)
-	{
-		m_nNumModel = CTitle::GetLoad()->GetNumModel();
-	}
-	else if (CManager::GetMode() == CScene::MODE_TUTORIAL)
-	{
-		m_nNumModel = CTutorial::GetLoad()->GetNumModel();
-	}
-	else if (CManager::GetMode() == CScene::MODE_GAME)
-	{
-		m_nNumModel = CGame::GetLoad()->GetNumModel();
-	}
+	m_nNumModel = CManager::GetLoad()->GetNumModel();
 
 	// 位置の設定
 	m_pos = pos;
@@ -160,24 +149,9 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-		if (CManager::GetMode() == CScene::MODE_TITLE)
-		{
-			apModelFile[nCntModel] = CTitle::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
-			pos = CTitle::GetLoad()->GetPos(nCntModel);								// 位置の取得
-			rot = CTitle::GetLoad()->GetRot(nCntModel);								// 向きの取得
-		}
-		else if (CManager::GetMode() == CScene::MODE_GAME)
-		{
-			apModelFile[nCntModel] = CGame::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
-			pos = CGame::GetLoad()->GetPos(nCntModel);								// 位置の取得
-			rot = CGame::GetLoad()->GetRot(nCntModel);								// 向きの取得
-		}
-		else if (CManager::GetMode() == CScene::MODE_TUTORIAL)
-		{
-			apModelFile[nCntModel] = CTutorial::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
-			pos = CTutorial::GetLoad()->GetPos(nCntModel);								// 位置の取得
-			rot = CTutorial::GetLoad()->GetRot(nCntModel);								// 向きの取得
-		}
+		apModelFile[nCntModel] = CManager::GetLoad()->GetFileName(nCntModel);		// ファイル名取得
+		pos = CManager::GetLoad()->GetPos(nCntModel);								// 位置の取得
+		rot = CManager::GetLoad()->GetRot(nCntModel);								// 向きの取得
 
 		m_apModel[nCntModel] = CModel::Create(apModelFile[nCntModel], pos, rot);	// 生成
 	}
@@ -191,18 +165,7 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	{
 		int nParent = 0;
 
-		if (CManager::GetMode() == CScene::MODE_TITLE)
-		{
-			nParent = CTitle::GetLoad()->GetParent(nCntModel);	// 親を取得
-		}
-		else if (CManager::GetMode() == CScene::MODE_GAME)
-		{
-			nParent = CGame::GetLoad()->GetParent(nCntModel);	// 親を取得
-		}
-		else if (CManager::GetMode() == CScene::MODE_TUTORIAL)
-		{
-			nParent = CTutorial::GetLoad()->GetParent(nCntModel);	// 親を取得
-		}
+		nParent = CManager::GetLoad()->GetParent(nCntModel);	// 親を取得
 
 		m_apModel[nCntModel]->SetParent(m_apModel[nParent]);
 	}
@@ -211,18 +174,7 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos)
 	for (int nCntMotion = 0; nCntMotion < MOTIONTYPE_MAX; nCntMotion++)
 	{// モーション数分繰り返す
 		m_pMotion->Set(nCntMotion);
-		if (CManager::GetMode() == CScene::MODE_TITLE)
-		{
-			m_pMotion->SetInfo(CTitle::GetLoad()->GetInfo(nCntMotion));
-		}
-		else if (CManager::GetMode() == CScene::MODE_GAME)
-		{
-			m_pMotion->SetInfo(CGame::GetLoad()->GetInfo(nCntMotion));
-		}
-		else if (CManager::GetMode() == CScene::MODE_TUTORIAL)
-		{
-			m_pMotion->SetInfo(CTutorial::GetLoad()->GetInfo(nCntMotion));
-		}
+		m_pMotion->SetInfo(CManager::GetLoad()->GetInfo(nCntMotion));
 	}
 
 	// 初期モーション設定
@@ -354,8 +306,11 @@ void CPlayer::Update(void)
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
 
-		// サウンドの再生
-		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		if (CManager::GetMode() != CScene::MODE_TITLE)
+		{
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		}
 		break;
 
 	case TURN_LEFT:		// 左へ曲がる
@@ -368,8 +323,11 @@ void CPlayer::Update(void)
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
 
-		// サウンドの再生
-		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		if (CManager::GetMode() != CScene::MODE_TITLE)
+		{
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		}
 		break;
 
 	case TURN_BACK:		// 折り返し
@@ -382,8 +340,11 @@ void CPlayer::Update(void)
 		m_nTurnCounter = 0;			// カウンタをリセット
 		m_turnType = TURN_NONE;		// 曲がらない設定にする
 
-		// サウンドの再生
-		CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		if (CManager::GetMode() != CScene::MODE_TITLE)
+		{
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_SE_CURVE);
+		}
 		break;
 	}
 

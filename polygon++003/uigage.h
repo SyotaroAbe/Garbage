@@ -19,10 +19,10 @@ class CObject2D;
 //===============================================
 // マクロ定義
 //===============================================
-#define AMOUNT_OF_RISE_NORMAL	(0.15f)				// ゲージ上昇量（通常）
-#define AMOUNT_OF_RISE_BIG		(0.25f)				// ゲージ上昇量（大きい）
-#define AMOUNT_OF_RISE_SMALL	(0.05f)				// ゲージ上昇量（小さい）
-#define MAX_GARBAGE		(1.0f)				// 最大ゴミ量
+#define AMOUNT_OF_RISE_NORMAL	(3)				// ゲージ上昇量（通常）
+#define AMOUNT_OF_RISE_BIG		(5)				// ゲージ上昇量（大きい）
+#define AMOUNT_OF_RISE_SMALL	(1)				// ゲージ上昇量（小さい）
+#define MAX_GARBAGE				(20)				// 最大ゴミ量
 
 //===============================================
 // ゴミゲージクラス
@@ -48,8 +48,8 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void Update(void);
 	void Draw(void);
 
-	void Set(float fGarbage);
-	float Get(void) { return m_fGarbage; }
+	void Set(int fGarbage);
+	int Get(void) { return m_nGarbage; }
 	bool GetMax(CGarbage::MODELSIZE size = CGarbage::MODELSIZE_MAX);
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
@@ -59,7 +59,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 
 	float m_fTexU;									// テクスチャ座標の開始位置（U値）
 	float m_fTexV;									// テクスチャ座標の開始位置（V値）
-	float m_fGarbage;								// ゴミの量
+	int m_nGarbage;									// ゴミの量
 	float m_fMoveShake;								// 震える動きの移動量
 	bool m_bVMoveShake;								// 震える動きの向き
 };

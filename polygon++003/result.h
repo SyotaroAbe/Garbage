@@ -39,6 +39,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CRanking *m_pRanking;					// ランキングクラスのポインタ
 	static CRankIn *m_pRankIn;						// ランクインクラスのポインタ
 
+	int m_nTimeFade;	// 自動フェード時間
 	bool m_bFade;		// フェードに入ったか
 };
 

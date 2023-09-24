@@ -26,6 +26,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	HRESULT Load(void);
 	void Unload(void);
 
+	void Delete(int nIdx);
 	int Regist(const char *pFilename);
 	LPDIRECT3DTEXTURE9 GetAddress(int nIdx) { return m_apTexture[nIdx]; }
 

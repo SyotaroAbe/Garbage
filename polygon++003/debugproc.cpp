@@ -79,11 +79,12 @@ void CDebugProc::Uninit(void)
 void CDebugProc::Update(void)
 {
 	CInputKeyboard *pInputKeyboard = CManager::GetKeyboardInput();	// キーボードのポインタ
-
+#if _DEBUG
 	if(pInputKeyboard->GetTrigger(DIK_F1) == true)
 	{//F1キーが押されたとき
 		m_bDisp = m_bDisp ? false : true;
 	}
+#endif
 }
 
 //==========================================================

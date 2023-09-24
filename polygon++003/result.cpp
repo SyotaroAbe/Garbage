@@ -15,6 +15,11 @@
 #include "sound.h"
 
 //===============================================
+// マクロ定義
+//===============================================
+#define TIME_FADE		(400)			// 自動フェード時間
+
+//===============================================
 // 静的メンバ変数
 //===============================================
 CBg *CResult::m_pBg = NULL;						// 背景クラスのポインタ
@@ -27,6 +32,7 @@ CRankIn *CResult::m_pRankIn = NULL;				// ランクインクラスのポインタ
 CResult::CResult() : CScene()
 {
 	// 値のクリア
+	m_nTimeFade = 0;
 	m_bFade = false;
 }
 
@@ -51,6 +57,9 @@ HRESULT CResult::Init(HWND hWnd)
 
 	// ランクインの生成
 	m_pRankIn = CRankIn::Create();
+
+	// サウンドの再生
+	CManager::GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
 	return S_OK;
 }
@@ -77,15 +86,15 @@ void CResult::Uninit(void)
 //===============================================
 void CResult::Update(void)
 {
+	m_nTimeFade++;		// 時間をカウント
+
 	if (CManager::GetKeyboardInput()->GetTrigger(DIK_RETURN) == true
-		|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true)
-	{
+		|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true
+		|| m_nTimeFade > TIME_FADE)
+	{// ENTER入力か一定時間経過
 		if (m_bFade == false)
 		{// フェードバグ防止
 			CRenderer::GetFade()->Set(CScene::MODE_TITLE);	// ゲームタイトル画面へ移行
-
-			// サウンドの再生
-			CManager::GetSound()->Play(CSound::LABEL_SE_TITLE_ENTER);
 
 			m_bFade = true;
 		}

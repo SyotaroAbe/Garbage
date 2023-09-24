@@ -12,9 +12,22 @@
 //=============================================================================
 const CSound::INFO CSound::m_aInfo[LABEL_MAX] =
 {
-	{ "data/BGM/BOX_BATTLE.wav", -1 },			// BGM（ゲーム）
+	{ "data/BGM/title.wav", -1 },				// BGM（タイトル）
+	{ "data/BGM/tutorial.wav", -1 },			// BGM（チュートリアル）
+	{ "data/BGM/game.wav", -1 },				// BGM（ゲーム）
+	{ "data/BGM/fever.wav", -1 },				// BGM（フィーバー）
+	{ "data/BGM/scoreattack.wav", -1 },			// BGM（スコアアタック）
+	{ "data/BGM/ranking.wav", -1 },				// BGM（ランキング）
 	{ "data/SE/curve.wav", 0 },					// カーブ
-	{ "data/SE/clash.wav", 0 },					// 破壊
+	{ "data/SE/separation.wav", 0 },			// 分別
+	{ "data/SE/just.wav", 0 },					// JustDust
+	{ "data/SE/success.wav", 0 },				// 成功
+	{ "data/SE/failure.wav", 0 },				// 失敗
+	{ "data/SE/rockon.wav", 0 },				// ロックオン
+	{ "data/SE/able_rockon.wav", 0 },			// ロックオン可
+	{ "data/SE/disable_rockon.wav", 0 },		// ロックオン不可
+	{ "data/SE/dumpster.wav", 0 },				// ゴミステーション
+	{ "data/SE/fever.wav", 0 },					// フィーバー
 	{ "data/SE/pause.wav", 0 },					// ポーズ起動
 	{ "data/SE/pause_cancel.wav", 0 },			// ポーズキャンセル
 	{ "data/SE/pause_cursor.wav", 0 },			// ポーズのカーソル移動
