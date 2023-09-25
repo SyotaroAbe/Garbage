@@ -25,6 +25,7 @@
 #include "sound.h"
 #include "justdust.h"
 #include "fever.h"
+#include "hint.h"
 
 //===============================================
 // 静的メンバ変数
@@ -44,6 +45,7 @@ CUiGage *CGame::m_pUiGage = NULL;						// ゴミゲージクラスのポインタ
 CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
 CJustDust *CGame::m_pJustDust = NULL;					// JustDust表示クラスのポインタ
 CFever *CGame::m_pFever = NULL;							// Fever表示クラスのポインタ
+CHint *CGame::m_pHint = NULL;							// ヒント表示クラスのポインタ
 
 bool CGame::m_bPause = false;				// ポーズ状態
 bool CGame::m_bStateReady = false;			// GAMSESTATE_READYかどうか
@@ -93,11 +95,7 @@ HRESULT CGame::Init(HWND hWnd)
 	CGarbage::Load();
 
 	// ゴミステーションの読み込みと生成
-	CDumpster::Load();
-	m_pDumpster[0] = CDumpster::Create(D3DXVECTOR3(300.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 2);
-	m_pDumpster[1] = CDumpster::Create(D3DXVECTOR3(-5300.0f, 0.0f, -5200.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), 2);
-	m_pDumpster[2] = CDumpster::Create(D3DXVECTOR3(200.0f, 0.0f, -5400.0f), D3DXVECTOR3(0.0f, D3DX_PI, 0.0f), 2);
-	m_pDumpster[3] = CDumpster::Create(D3DXVECTOR3(-3500.0f, 0.0f, -1500.0f), D3DXVECTOR3(0.0f, D3DX_PI, 0.0f), 2);
+	CDumpster::Load(hWnd);
 
 	// ターゲットの生成
 	m_pTarget = CTarget::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGarbage::SEPARATION_NONE, -1, 5);
@@ -116,6 +114,9 @@ HRESULT CGame::Init(HWND hWnd)
 
 	// ゴミゲージの生成
 	m_pUiGage = CUiGage::Create(6);
+
+	// ヒント表示の生成
+	m_pHint = CHint::Create();
 
 	// ポーズの生成
 	m_pPause = CPause::Create(6);

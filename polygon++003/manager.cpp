@@ -45,8 +45,9 @@ CScene * CManager::m_pScene = NULL;					// シーンクラスのポインタ
 CFileLoad *CManager::m_pFileLoad = NULL;			// ロードクラスのポインタ
 HWND CManager::m_hWnd = NULL;						// ウインドウ保存用
 
-CScene::MODE CScene::m_mode = CScene::MODE_TITLE;	// 現在の画面モード
-CScene::MODE CManager::m_mode = CScene::MODE_TITLE;	// 現在の画面モード
+CScene::MODE CScene::m_mode = CScene::MODE_TITLE;		// 現在の画面モード
+CScene::MODE CScene::m_modeOld = CScene::MODE_TITLE;	// 前回の画面モード
+CScene::MODE CManager::m_mode = CScene::MODE_TITLE;		// 現在の画面モード
 
 //***********************************************************
 // シーンクラス
@@ -79,6 +80,28 @@ CScene *CScene::Create(HWND hWnd, MODE mode)
 	{
 	case MODE_TITLE:	// タイトル画面
 		pScene = new CTitle;
+
+		if (m_mode == MODE_RESULT)
+		{
+			// サウンドの再生
+			CManager::GetSound()->Stop(CSound::LABEL_BGM_RANKING);
+			CManager::GetSound()->Stop(CSound::LABEL_BGM_TITLE);
+			CManager::GetSound()->Play(CSound::LABEL_BGM_TITLE);
+
+			//if (CManager::GetSound()->GetPlay(CSound::LABEL_BGM_TITLE) == false)
+			//{// タイトルのBGMが再生されていない
+			//	// サウンドの再生
+			//	CManager::GetSound()->Play(CSound::LABEL_BGM_TITLE);
+			//}
+		}
+		else
+		{
+			// サウンドの停止
+			CManager::GetSound()->Stop();
+
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_BGM_TITLE);
+		}
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル画面
@@ -91,6 +114,15 @@ CScene *CScene::Create(HWND hWnd, MODE mode)
 
 	case MODE_RESULT:	// リザルト画面
 		pScene = new CResult;
+
+		if (m_mode != MODE_TITLE)
+		{
+			// サウンドの停止
+			CManager::GetSound()->Stop();
+
+			// サウンドの再生
+			CManager::GetSound()->Play(CSound::LABEL_BGM_RANKING);
+		}
 		break;
 	}
 
@@ -111,6 +143,7 @@ CScene *CScene::Create(HWND hWnd, MODE mode)
 //===============================================
 void CScene::SetMode(MODE mode)
 {
+	m_modeOld = m_mode;
 	m_mode = mode;
 }
 
@@ -416,8 +449,11 @@ void CManager::SetMode(CScene::MODE mode)
 	int nScore;
 	m_mode = mode;
 
-	// サウンドの停止
-	GetSound()->Stop();
+	if (mode == CScene::MODE_TUTORIAL || mode == CScene::MODE_GAME)
+	{
+		// サウンドの停止
+		GetSound()->Stop();
+	}
 
 	// シーンを代入
 	CScene *pScenePrev = m_pScene;

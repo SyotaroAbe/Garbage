@@ -55,9 +55,11 @@ public:		// 誰でもアクセス可能[アクセス指定子]
 
 	static void SetMode(MODE mode);
 	static MODE GetMode(void) { return m_mode; }
+	static MODE GetModeOld(void) { return m_modeOld; }
 
 private:	// 自分のみアクセス可能[アクセス指定子]
 	static MODE m_mode;		// 現在の画面モード
+	static MODE m_modeOld;	// 前回の画面モード
 };
 
 //===============================================

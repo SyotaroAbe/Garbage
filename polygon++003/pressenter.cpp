@@ -13,11 +13,11 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define TEXTURE			"data\\TEXTURE\\PRESS_ENTER_OR_START.png"	// UIのテクスチャ
-#define BRIGHTNESS		(0.02f)										// 明るさの値
-#define FADE_BRIGHTNESS	(0.4f)										// フェード時の点滅
-#define SIZE_X			(325.0f)									// 横サイズ
-#define SIZE_Y			(50.0f)										// 縦サイズ
+#define TEXTURE			"data\\TEXTURE\\PRESS_ENTER_OR_A.png"	// UIのテクスチャ
+#define BRIGHTNESS		(0.02f)									// 明るさの値
+#define FADE_BRIGHTNESS	(0.4f)									// フェード時の点滅
+#define SIZE_X			(325.0f)								// 横サイズ
+#define SIZE_Y			(50.0f)									// 縦サイズ
 
 //===============================================
 // 静的メンバ変数

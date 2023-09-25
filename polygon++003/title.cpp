@@ -21,7 +21,7 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define TIME_FADERANKING		(600)			// 自動フェード時間
+#define TIME_FADERANKING		(800)			// 自動フェード時間
 
 //===============================================
 // 静的メンバ変数
@@ -74,9 +74,6 @@ HRESULT CTitle::Init(HWND hWnd)
 
 	// PressEnterの生成
 	m_pPressEnter = CPressEnter::Create();
-
-	// サウンドの再生
-	CManager::GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
 	return S_OK;
 }

@@ -382,6 +382,44 @@ WALLSET
 END_WALLSET
 
 #------------------------------------------------------------------------------
+# ゴミステーション配置情報
+#------------------------------------------------------------------------------
+DUMPSTERSET
+	TYPE = 1
+	POS = 300.0 0.0 -200.0
+	ROT = 0.0 1.57 0.0
+	SHADOW = 0
+END_DUMPSTERSET
+
+DUMPSTERSET
+	TYPE = 1
+	POS = -5300.0 0.0 -5200.0
+	ROT = 0.0 -1.57 0.0
+	SHADOW = 0
+END_DUMPSTERSET
+
+DUMPSTERSET
+	TYPE = 1
+	POS = 200.0 0.0 -5400.0
+	ROT = 0.0 3.14 0.0
+	SHADOW = 0
+END_DUMPSTERSET
+
+DUMPSTERSET
+	TYPE = 1
+	POS = -3500.0 0.0 -1500.0
+	ROT = 0.0 3.14 0.0
+	SHADOW = 0
+END_DUMPSTERSET
+
+DUMPSTERSET
+	TYPE = 1
+	POS = -1500.0 0.0 -2500.0
+	ROT = 0.0 3.14 0.0
+	SHADOW = 0
+END_DUMPSTERSET
+
+#------------------------------------------------------------------------------
 # モデル配置情報
 #------------------------------------------------------------------------------
 MODELSET
@@ -501,14 +539,6 @@ END_MODELSET
 MODELSET
 	TYPE = 1
 	POS = -1500.0 0.0 -1500.0
-	ROT = 0.0 3.14 0.0
-	SHADOW = 0
-END_MODELSET
-
-
-MODELSET
-	TYPE = 2
-	POS = -1500.0 0.0 -2500.0
 	ROT = 0.0 3.14 0.0
 	SHADOW = 0
 END_MODELSET

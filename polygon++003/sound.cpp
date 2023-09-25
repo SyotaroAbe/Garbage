@@ -301,6 +301,26 @@ void CSound::Stop(void)
 }
 
 //=============================================================================
+// 再生状態の取得
+//=============================================================================
+bool CSound::GetPlay(LABEL label)
+{
+	float pVolume = 0.0f;
+
+	// 状態取得
+	m_apSourceVoice[label]->GetVolume(&pVolume);
+
+	if (pVolume == 0.0f)
+	{// 再生中
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//=============================================================================
 // チャンクのチェック
 //=============================================================================
 HRESULT CSound::CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition)

@@ -154,7 +154,9 @@ CGarbage *CGarbage::Create(D3DXVECTOR3 pos, int nPriority)
 
 			if (type == CObject::TYPE_GARBAGE)
 			{// ƒSƒ~
-				if (pObject->GetPos() == pos)
+				if (pObject->GetPos().x <= pos.x + 3.0f && pObject->GetPos().x >= pos.x - 3.0f
+					&& pObject->GetPos().y <= pos.y + 3.0f && pObject->GetPos().y >= pos.y - 3.0f
+					&& pObject->GetPos().z <= pos.z + 3.0f && pObject->GetPos().z >= pos.z - 3.0f)
 				{// Šù‚É”z’u‚³‚ê‚½ƒSƒ~‚ÆˆÊ’u‚ªˆê’v
 					bMatchPos = true;
 				}

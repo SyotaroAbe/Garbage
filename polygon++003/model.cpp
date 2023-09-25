@@ -194,7 +194,7 @@ void CModel::Draw(void)
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
 		// モデルのカラー変更
-		pMat[nCntMat].MatD3D.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		//pMat[nCntMat].MatD3D.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
@@ -251,6 +251,9 @@ void CModel::DrawShadowmtx(void)
 
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
+		// モデルの色を保存
+		D3DXCOLOR DiffuseModel = pMat[nCntMat].MatD3D.Diffuse;
+
 		// モデルのカラー変更
 		pMat[nCntMat].MatD3D.Diffuse = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -262,6 +265,9 @@ void CModel::DrawShadowmtx(void)
 
 		// モデル（パーツ）の描画
 		m_pMesh->DrawSubset(nCntMat);
+
+		// 保存していた色を戻す
+		pMat[nCntMat].MatD3D.Diffuse = DiffuseModel;
 	}
 
 	// 保存していたマテリアルを戻す

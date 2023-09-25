@@ -1,4 +1,4 @@
-﻿  model.cpp
+﻿  dumpster.cpp
 cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.exe
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.pdb (Full PDB)

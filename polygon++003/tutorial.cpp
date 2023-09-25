@@ -88,7 +88,7 @@ HRESULT CTutorial::Init(HWND hWnd)
 	CGarbage::Load();
 
 	// ゴミステーションの読み込みと生成
-	CDumpster::Load();
+	CDumpster::Load(hWnd);
 	m_pDumpster = CDumpster::Create(D3DXVECTOR3(300.0f, 0.0f, POS_CREATEOBJ), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 2);
 
 	// ターゲットの生成

@@ -57,6 +57,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	HRESULT Play(LABEL label);
 	void Stop(LABEL label);
 	void Stop(void);
+	bool GetPlay(LABEL label);
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
 	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);

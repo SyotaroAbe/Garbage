@@ -12,8 +12,8 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MAX_DUMPSTER			(4)			// 最大ゴミステーション配置数
-#define DUMPSTER_LENTH			(135.0f)	// ゴミを回収できる範囲
+#define MAX_DUMPSTER			(5)			// 最大ゴミステーション配置数
+#define DUMPSTER_LENTH			(160.0f)	// ゴミを回収できる範囲
 
 //===============================================
 // ゴミステーションクラス
@@ -25,8 +25,9 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	CDumpster(int nPriority = 3);	// オーバーロードされたコンストラクタ
 	~CDumpster();					// デストラクタ
 
-	static HRESULT Load(void);
-	static void Unload(void);
+	static void Load(HWND hWnd);
+	static void Script(FILE *pFile);
+	static void ModelSet(FILE *pFile);
 	static CDumpster *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPriority = 3);
 
 	HRESULT Init(D3DXVECTOR3 pos);

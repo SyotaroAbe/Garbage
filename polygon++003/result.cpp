@@ -12,12 +12,11 @@
 #include "ranking.h"
 #include "rankIn.h"
 #include "manager.h"
-#include "sound.h"
 
 //===============================================
 // マクロ定義
 //===============================================
-#define TIME_FADE		(400)			// 自動フェード時間
+#define TIME_FADE		(600)			// 自動フェード時間
 
 //===============================================
 // 静的メンバ変数
@@ -57,9 +56,6 @@ HRESULT CResult::Init(HWND hWnd)
 
 	// ランクインの生成
 	m_pRankIn = CRankIn::Create();
-
-	// サウンドの再生
-	CManager::GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
 	return S_OK;
 }

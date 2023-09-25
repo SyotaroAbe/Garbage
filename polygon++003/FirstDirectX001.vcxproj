@@ -170,6 +170,7 @@
     <ClCompile Include="fileload.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="garbage.cpp" />
+    <ClCompile Include="hint.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="justdust.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="fileload.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="garbage.h" />
+    <ClInclude Include="hint.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="justdust.h" />
