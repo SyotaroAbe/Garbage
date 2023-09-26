@@ -19,6 +19,7 @@
 #include "tutorial.h"
 #include "uigage.h"
 #include "sound.h"
+#include "gagefull.h"
 
 //===============================================
 // マクロ定義
@@ -203,10 +204,7 @@ void CTarget::Update(void)
 		}
 		m_bWithinRange = true;
 
-		// 縮小処理
-		CObjectBillboard::ScalingSize(DIFF_SIZE);
-
-		if (m_bMaxGage == false)
+		if (m_bMaxGage == false || WithinRangeGarbage(false) == true)
 		{
 			// オブジェクトビルボードの色設定
 			CObjectBillboard::SetCol(D3DXCOLOR(0.2f, 1.0f, 0.2f, 1.0f));	// 緑
@@ -215,7 +213,20 @@ void CTarget::Update(void)
 		{
 			// オブジェクトビルボードの色設定
 			CObjectBillboard::SetCol(D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f));	// 灰色
+
+			// ゲージフル設定
+			if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+			{
+				CTutorial::GetGageFull()->Set(true);
+			}
+			else if (CManager::GetMode() == CScene::MODE_GAME)
+			{
+				CGame::GetGageFull()->Set(true);
+			}
 		}
+
+		// 縮小処理
+		CObjectBillboard::ScalingSize(DIFF_SIZE);
 	}
 	else
 	{
@@ -226,6 +237,16 @@ void CTarget::Update(void)
 
 		// オブジェクトビルボードの色設定
 		CObjectBillboard::SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));	// 白
+
+		// ゲージフル設定
+		if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+		{
+			CTutorial::GetGageFull()->Set(false);
+		}
+		else if (CManager::GetMode() == CScene::MODE_GAME)
+		{
+			CGame::GetGageFull()->Set(false);
+		}
 	}
 
 	// ターゲット位置変更

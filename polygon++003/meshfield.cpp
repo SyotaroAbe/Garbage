@@ -16,6 +16,7 @@
 #include "target.h"
 #include "title.h"
 #include "renderer.h"
+#include "time.h"
 
 //===============================================
 // マクロ定義
@@ -41,7 +42,6 @@
 
 // FEVER
 #define CREATEGABAGETIME_FEVER		(120)									// フィーバー状態時にゴミを生成する時間間隔
-#define TIME_FEVER					(TIME_STATEFEVER + TIME_STATEREADY)		// フィーバー状態へ画面が切り替わるまでの時間
 #define RAND_GABAGEPOSFEVER			(140)									// フィーバー状態時にゴミが生成される確率
 #define ADD_RANDFEVER				(1)										// フィーバー状態のランダムの確率上昇数
 
@@ -1921,7 +1921,7 @@ void CMeshField::Update(void)
 		PlayerPos = CGame::GetPlayer()->GetPos();	// 位置
 		PlayerRot = CGame::GetPlayer()->GetRot();	// 向き
 
-		if (m_nTimeFever > TIME_STATEFEVER)
+		if (CGame::GetTime()->Get() <= TIME_FEVER)
 		{// FEVER TIME
 			//if ((m_nTimeFever % CREATEGABAGETIME_FEVER) == 0)
 			//{// 一定時間ごと
@@ -2575,7 +2575,7 @@ void CMeshField::TurnInfo(float fRot)
 //===============================================
 void CMeshField::TurnInput(DESTINATION destination)
 {
-	if (CManager::GetKeyboardInput()->GetPress(DIK_Q) == true/* || CManager::GetInputGamePad()->GetJoyStickLX(0) < 0*/ 
+	if (CManager::GetKeyboardInput()->GetPress(DIK_Q) == true || CManager::GetKeyboardInput()->GetPress(DIK_Z) == true
 		|| CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_LB, 0) || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_LEFT, 0))
 	{// Aキー入力
 		if (destination == DESTINATION_STRAIGHT_CURVE || destination == DESTINATION_STRAIGHT_LEFT || destination == DESTINATION_CURVE || destination == DESTINATION_LEFT)
@@ -2590,7 +2590,7 @@ void CMeshField::TurnInput(DESTINATION destination)
 			}
 		}
 	}
-	else if (CManager::GetKeyboardInput()->GetPress(DIK_E) == true/* || CManager::GetInputGamePad()->GetJoyStickLX(0) > 0*/
+	else if (CManager::GetKeyboardInput()->GetPress(DIK_E) == true || CManager::GetKeyboardInput()->GetPress(DIK_C) == true
 		|| CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_RB, 0) || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_RIGHT, 0))
 	{// Dキー入力
 		if (destination == DESTINATION_STRAIGHT_CURVE || destination == DESTINATION_STRAIGHT_RIGHT || destination == DESTINATION_CURVE || destination == DESTINATION_RIGHT)

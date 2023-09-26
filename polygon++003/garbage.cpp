@@ -380,6 +380,15 @@ void CGarbage::Update(void)
 						m_bJustDust = true;		// JustDustに設定
 					}
 
+					if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+					{// チュートリアル
+						CTutorial::GetPlayer()->SetMotion(CPlayer::MOTIONTYPE_ACTION);		// プレイヤーモーションを設定
+					}
+					else if (CManager::GetMode() == CScene::MODE_GAME)
+					{// ゲーム
+						CGame::GetPlayer()->SetMotion(CPlayer::MOTIONTYPE_ACTION);			// プレイヤーモーションを設定
+					}
+
 					m_posDest.y = DIFF_HEIGHT;		// 目的の高さを設定
 					m_state = STATE_DISPOSE;		// 捨てる
 				}
@@ -424,18 +433,18 @@ void CGarbage::Update(void)
 			if (m_bJustDust == false)
 			{
 				// エフェクトの生成
-				CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.5f, 1.0f, 1.0f), 20, 25, 3);
+				CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.5f, 1.0f, 1.0f), CEffect::TYPE_NORMAL, 20, 25, 3);
 			}
 			else
 			{
 				// エフェクトの生成
-				CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.9f, 0.5f, 0.2f, 1.0f), 20, 25, 3);
+				CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.9f, 0.5f, 0.2f, 1.0f), CEffect::TYPE_NORMAL, 20, 25, 3);
 			}
 		}
 		else
 		{// 分別失敗
 			// エフェクトの生成
-			CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f), 20, 25, 3);
+			CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f), CEffect::TYPE_NORMAL, 20, 25, 3);
 		}
 
 		if (m_pos.x <= m_posDest.x + DIFF_DISPOSE
@@ -533,6 +542,15 @@ void CGarbage::Update(void)
 						if (CManager::GetKeyboardInput()->GetTrigger(DIK_SPACE) == true
 							|| CManager::GetInputGamePad()->GetTrigger(CInputGamePad::BUTTON_A, 0) == true)
 						{// SPACEキーが押された
+							if (CManager::GetMode() == CScene::MODE_TUTORIAL)
+							{// チュートリアル
+								CTutorial::GetPlayer()->SetMotion(CPlayer::MOTIONTYPE_ACTION);		// プレイヤーモーションを設定
+							}
+							else if (CManager::GetMode() == CScene::MODE_GAME)
+							{// ゲーム
+								CGame::GetPlayer()->SetMotion(CPlayer::MOTIONTYPE_ACTION);			// プレイヤーモーションを設定
+							}
+
 							m_posDest.y = DIFF_HEIGHT;			// 目的の高さを設定
 							m_nextposDest = pObject->GetPos();	// 次の目的の位置を保存
 
@@ -556,7 +574,7 @@ void CGarbage::Update(void)
 		m_pos += m_posDiff * m_fMoveDiff;	// 位置の補正
 
 		// エフェクトの生成
-		CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.2f, 1.0f), 20, 25, 3);
+		CEffect::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.2f, 1.0f), CEffect::TYPE_NORMAL, 20, 25, 3);
 
 		if (m_pos.x <= m_posDest.x + DIFF_DISPOSE
 			&& m_pos.x >= m_posDest.x - DIFF_DISPOSE

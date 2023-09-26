@@ -36,6 +36,7 @@ class CUiTarget;
 class CJustDust;
 class CFever;
 class CHint;
+class CGageFull;
 
 //===============================================
 // ゲーム画面クラス
@@ -78,6 +79,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	static CJustDust *GetJustDust() { return m_pJustDust; }
 	static CFever *GetFever() { return m_pFever; }
 	static CHint *GetHint() { return m_pHint; }
+	static CGageFull *GetGageFull() { return m_pGageFull; }
 
 	static void SetEnablePause(const bool bPause);
 	static bool GetPauseState(void) { return m_bPause; }
@@ -103,6 +105,7 @@ private:	// 自分のみアクセス可能 [アクセス指定子]
 	static CJustDust *m_pJustDust;					// JustDust表示クラスのポインタ
 	static CFever *m_pFever;						// Fever表示クラスのポインタ
 	static CHint *m_pHint;							// ヒント表示クラスのポインタ
+	static CGageFull *m_pGageFull;					// ゲージフル表示クラスのポインタ
 
 	static bool m_bStateReady;		// GAMSESTATE_READYかどうか
 	static bool m_bPause;			// 現在のポーズの状態

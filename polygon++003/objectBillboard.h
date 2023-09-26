@@ -33,8 +33,9 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 
 	void UpdatePos(D3DXVECTOR3 pos, float fSizeX, float fSizeY);
 	void RevisionPos(const D3DXVECTOR3 pos, const float fMalti = 1.0f);
-	void ScalingSize(const float fSize, float fMalti = SIZE_DIFF);
+	bool ScalingSize(const float fSize, float fMalti = SIZE_DIFF);
 	void DrawEffect(void);
+	void Brightness(float fBrightness);
 
 	void BindTexture(int nIdx);
 	void SetPos(const D3DXVECTOR3 pos);
@@ -58,6 +59,8 @@ protected:	// 派生クラスからもアクセスできる [アクセス指定子]
 	float m_fSizeZ;								// 高さ
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
+	float m_fBrightness;				// 明るさの値
+	bool m_bFlash;						// 明るくするか暗くするか
 };
 
 #endif

@@ -32,6 +32,7 @@ class CMotion;
 #define ROT_RIGHTDOWN		(0.75f)		// 右下の角度
 #define ROT_UP				(0.0f)		// 上の角度
 #define ROT_DOWN			(1.0f)		// 下の角度
+#define TIME_FEVER			(30)		// フィーバーになる時間
 
 //===============================================
 // プレイヤークラス
@@ -82,6 +83,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void SetTurn(TURN turn);
 	TURN GetTurn(void){return m_turnType;}
 	TURN GetTurnOld(void) { return m_turnTypeOld; }
+	void SetMotion(MOTIONTYPE type);
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
 	D3DXVECTOR3 m_pos;						// 位置

@@ -22,6 +22,7 @@
 #include "uioperation.h"
 #include "justdust.h"
 #include "sound.h"
+#include "gagefull.h"
 
 //===============================================
 // マクロ定義
@@ -47,6 +48,7 @@ CUiGage *CTutorial::m_pUiGage = NULL;			// ゴミゲージクラスのポインタ
 CUiTarget *CTutorial::m_pUiTarget = NULL;		// ターゲットUIクラスのポインタ
 CUiOperation *CTutorial::m_pUiOperation = NULL;	// 操作方法表示クラスのポインタ
 CJustDust *CTutorial::m_pJustDust = NULL;		// JustDust表示クラスのポインタ
+CGageFull *CTutorial::m_pGageFull = NULL;		// ゲージフル表示クラスのポインタ
 
 //===============================================
 // コンストラクタ
@@ -96,6 +98,9 @@ HRESULT CTutorial::Init(HWND hWnd)
 
 	// ターゲットUIの生成
 	m_pUiTarget = CUiTarget::Create(5);
+
+	// ゲージフルの生成
+	m_pGageFull = CGageFull::Create(6);
 
 	// JustDustの生成
 	m_pJustDust = CJustDust::Create(5);

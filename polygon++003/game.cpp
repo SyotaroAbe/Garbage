@@ -26,6 +26,7 @@
 #include "justdust.h"
 #include "fever.h"
 #include "hint.h"
+#include "gagefull.h"
 
 //===============================================
 // 静的メンバ変数
@@ -46,6 +47,7 @@ CUiTarget *CGame::m_pUiTarget = NULL;					// ターゲットUIクラスのポインタ
 CJustDust *CGame::m_pJustDust = NULL;					// JustDust表示クラスのポインタ
 CFever *CGame::m_pFever = NULL;							// Fever表示クラスのポインタ
 CHint *CGame::m_pHint = NULL;							// ヒント表示クラスのポインタ
+CGageFull *CGame::m_pGageFull = NULL;					// ゲージフル表示クラスのポインタ
 
 bool CGame::m_bPause = false;				// ポーズ状態
 bool CGame::m_bStateReady = false;			// GAMSESTATE_READYかどうか
@@ -102,6 +104,9 @@ HRESULT CGame::Init(HWND hWnd)
 
 	// ターゲットUIの生成
 	m_pUiTarget = CUiTarget::Create(5);
+
+	// ゲージフルの生成
+	m_pGageFull = CGageFull::Create(6);
 
 	// JustDustの生成
 	m_pJustDust = CJustDust::Create(5);
@@ -236,7 +241,7 @@ void CGame::Update(void)
 	case STATE_NORMAL:  // 通常状態
 		m_nCounterState--;
 
-		if (m_nCounterState <= 0)
+		if (m_pTime->Get() == TIME_FEVER)
 		{
 			m_state = STATE_FEVER;				// フィーバー状態に設定
 

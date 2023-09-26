@@ -168,6 +168,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fever.cpp" />
     <ClCompile Include="fileload.cpp" />
+    <ClCompile Include="gagefull.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="garbage.cpp" />
     <ClCompile Include="hint.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="fever.h" />
     <ClInclude Include="fileload.h" />
+    <ClInclude Include="gagefull.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="garbage.h" />
     <ClInclude Include="hint.h" />

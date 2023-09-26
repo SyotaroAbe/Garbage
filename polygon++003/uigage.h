@@ -48,6 +48,7 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void Update(void);
 	void Draw(void);
 
+	void Vibration(float fMove, float fMaxMove);
 	void Set(int fGarbage);
 	int Get(void) { return m_nGarbage; }
 	bool GetMax(CGarbage::MODELSIZE size = CGarbage::MODELSIZE_MAX);

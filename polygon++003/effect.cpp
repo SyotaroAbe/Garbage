@@ -19,7 +19,7 @@
 //===============================================
 // 静的メンバ変数
 //===============================================
-int CEffect::m_nIdxTexture = 0;					// 使用するテクスチャの番号
+int CEffect::m_aIdxTexture[TYPE_MAX] = {};		// 使用するテクスチャの番号
 int CEffect::m_nNumAll = 0;						// 総数
 
 //===============================================
@@ -28,6 +28,7 @@ int CEffect::m_nNumAll = 0;						// 総数
 CEffect::CEffect() : CObjectBillboard(1)
 {
 	// 値をクリアする
+	m_type = TYPE_NORMAL;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	m_nRadius = 0.0f;
 	m_nLife = 0;
@@ -41,6 +42,7 @@ CEffect::CEffect() : CObjectBillboard(1)
 CEffect::CEffect(int nPriority) : CObjectBillboard(nPriority)
 {
 	// 値をクリアする
+	m_type = TYPE_NORMAL;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	m_nRadius = 0.0f;
 	m_nLife = 0;
@@ -59,7 +61,7 @@ CEffect::~CEffect()
 //===============================================
 // 生成処理
 //===============================================
-CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float fRadios, int nLife, int nPriority)
+CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, TYPE type, float fRadios, int nLife, int nPriority)
 {
 	CEffect *pEffect = NULL;	// エフェクトクラスのポインタ
 
@@ -78,7 +80,9 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 		pEffect->Set(pos, move, col, fRadios, nLife);
 
 		// テクスチャの割り当て
-		pEffect->BindTexture(m_nIdxTexture);
+		pEffect->BindTexture(m_aIdxTexture[TYPE_NORMAL]);
+		pEffect->BindTexture(m_aIdxTexture[TYPE_STEAM]);
+		pEffect->BindTexture(m_aIdxTexture[TYPE_FIRE]);
 	}
 
 	return pEffect;
@@ -96,7 +100,9 @@ HRESULT CEffect::Init(D3DXVECTOR3 pos)
 	CObjectBillboard::Init(pos);
 
 	// テクスチャの設定
-	m_nIdxTexture = CManager::GetTexture()->Regist("data\\TEXTURE\\effect000.jpg");
+	m_aIdxTexture[TYPE_NORMAL] = CManager::GetTexture()->Regist("data\\TEXTURE\\effect000.jpg");
+	m_aIdxTexture[TYPE_STEAM] = CManager::GetTexture()->Regist("data\\TEXTURE\\eff_steam_000.png");
+	m_aIdxTexture[TYPE_FIRE] = CManager::GetTexture()->Regist("data\\TEXTURE\\eff_Glow_001.png");
 
 	return S_OK;
 }

@@ -109,9 +109,9 @@ void CTitle::Update(void)
 			CManager::GetSound()->Play(CSound::LABEL_SE_TITLE_ENTER);
 		}
 	}
-	else if (CManager::GetKeyboardInput()->GetPress(DIK_Q) == true/* || CManager::GetInputGamePad()->GetJoyStickLX(0) < 0*/
+	else if (CManager::GetKeyboardInput()->GetPress(DIK_Q) == true || CManager::GetKeyboardInput()->GetPress(DIK_Z) == true
 		|| CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_LB, 0) || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_LEFT, 0)
-		|| CManager::GetKeyboardInput()->GetPress(DIK_E) == true/* || CManager::GetInputGamePad()->GetJoyStickLX(0) > 0*/
+		|| CManager::GetKeyboardInput()->GetPress(DIK_E) == true || CManager::GetKeyboardInput()->GetPress(DIK_C) == true
 		|| CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_RB, 0) || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_RIGHT, 0))
 	{// プレイヤー（カメラ）を操作中
 		m_nTimeFade = 0;		//	カウントをリセット

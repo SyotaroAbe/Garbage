@@ -18,9 +18,17 @@
 #define SIZE_Y				(100.0f)			// 縦サイズ
 #define POSITION_X			(150.0f)			// 位置X
 #define POSITION_Y			(600.0f)			// 位置Y
-#define MOVE_SHAKE			(2.3f)				// 震えるときの移動量
-#define MAX_MOVESHAKE		(15.0f)				// 最大移動量
-#define SIZE_REGULATION		(0.05f)				// サイズ調整
+
+#define SIZE_REGULATION		(0.05f)					// サイズ調整
+
+// 最大値に近い
+#define NEARMAX_GARBAGE		(MAX_GARBAGE * 0.75f)	// 最大に近い量
+#define MOVE_NEARMAX		(1.0f)					// 震えるときの移動量
+#define MAXMOVE_NEARMAX		(5.0f)					// 最大移動量
+
+// 最大値
+#define MOVE_SHAKE			(2.3f)					// 震えるときの移動量
+#define MAX_MOVESHAKE		(16.0f)					// 最大移動量
 
 //===============================================
 // 静的メンバ変数
@@ -142,30 +150,13 @@ void CUiGage::Update(void)
 
 	if (m_nGarbage >= MAX_GARBAGE)
 	{// ゲージが最大値になった
-		if (m_bVMoveShake == false)
-		{
-			m_fMoveShake += MOVE_SHAKE;		// 移動量を加算
-
-			if (m_fMoveShake >= MAX_MOVESHAKE)
-			{// 一定の位置まで動いたら
-				m_bVMoveShake = true;	// 移動の向き切り替え
-			}
-		}
-		else
-		{
-			m_fMoveShake -= MOVE_SHAKE;		// 移動量を減算
-
-			if (m_fMoveShake <= 0)
-			{// 一定の位置まで動いたら
-				m_bVMoveShake = false;	// 移動の向き切り替え
-			}
-		}
-
-		for (int nCntObj = 0; nCntObj < TEX_MAX; nCntObj++)
-		{
-			// オブジェクト2Dの位置の設定処理
-			m_apObject2D[nCntObj]->SetPos(D3DXVECTOR3(POSITION_X + m_fMoveShake, POSITION_Y, 0.0f));
-		}
+		// 振動処理
+		Vibration(MOVE_SHAKE, MAX_MOVESHAKE);
+	}
+	else if (m_nGarbage >= NEARMAX_GARBAGE)
+	{// ゲージが最大値近くになった
+		// 振動処理
+		Vibration(MOVE_NEARMAX, MAXMOVE_NEARMAX);
 	}
 	else
 	{
@@ -190,6 +181,35 @@ void CUiGage::Draw(void)
 		// 色の更新処理（白）
 		m_apObject2D[TEX_INSIDE]->SetCol(D3DXCOLOR(m_nGarbage * SIZE_REGULATION, 1.0f - m_nGarbage * SIZE_REGULATION * 0.5f, 1.0f - m_nGarbage * SIZE_REGULATION, 1.0f));
 	}
+}
+
+//===============================================
+// 振動処理
+//===============================================
+void CUiGage::Vibration(float fMove, float fMaxMove)
+{
+	if (m_bVMoveShake == false)
+	{
+		m_fMoveShake += fMove;		// 移動量を加算
+
+		if (m_fMoveShake >= fMaxMove)
+		{// 一定の位置まで動いたら
+			m_bVMoveShake = true;	// 移動の向き切り替え
+		}
+	}
+	else
+	{
+		m_fMoveShake -= fMove;		// 移動量を減算
+
+		if (m_fMoveShake <= 0)
+		{// 一定の位置まで動いたら
+			m_bVMoveShake = false;	// 移動の向き切り替え
+		}
+	}
+
+	// オブジェクト2Dの位置の設定処理
+	m_apObject2D[TEX_INSIDE]->UpdatePos(D3DXVECTOR3(POSITION_X + m_fMoveShake, 700.0f - m_nGarbage * SIZE_REGULATION * SIZE_Y, 0.0f), SIZE_X, m_nGarbage * SIZE_REGULATION * SIZE_Y);
+	m_apObject2D[TEX_OUTSIDE]->SetPos(D3DXVECTOR3(POSITION_X + m_fMoveShake, POSITION_Y, 0.0f));
 }
 
 //===============================================

@@ -19,6 +19,7 @@
 CParticle::CParticle() : CObjectBillboard(2)
 {
 	// 値をクリアする
+	m_tex = CEffect::TYPE_NORMAL;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	m_nMaxApeear = 0;
 	m_nRadius = 0;
@@ -78,7 +79,7 @@ void CParticle::Update(void)
 		CEffect::Create(m_pos, D3DXVECTOR3(m_move.x += sinf(((float)(rand() % 629 - 314) / 100.0f) * ((float)(rand() % m_nRadius * m_nRadius) / 100.0f)),
 											m_move.y += cosf(((float)(rand() % 629 - 314) / 100.0f) * ((float)(rand() % m_nRadius * m_nRadius) / 100.0f)), 
 											m_move.z += cosf(((float)(rand() % 629 - 314) / 100.0f) * ((float)(rand() % m_nRadius * m_nRadius) / 100.0f))),
-											m_col,(float)m_nRadius, m_nLife, 4);
+											m_col, m_tex, (float)m_nRadius, m_nLife, 4);
 
 		m_nCntAppear++;		// 回数をカウントアップ
 	}
@@ -115,6 +116,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 
 	case TYPE_ENEMY:		// 敵の爆発
+		m_tex = CEffect::TYPE_NORMAL;
 		m_col = D3DXCOLOR(0.2f, 0.3f, 1.0f, 1.0f);
 		m_nMaxApeear = 10;
 		m_nRadius = 30;
@@ -122,6 +124,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 
 	case TYPE_BURN:			// 燃えるゴミ
+		m_tex = CEffect::TYPE_NORMAL;
 		m_col = D3DXCOLOR(1.0f, 0.3f, 0.2f, 1.0f);
 		m_nMaxApeear = 10;
 		m_nRadius = 20;
@@ -129,6 +132,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 			
 	case TYPE_NONFLAMMABLE:	// 燃えないゴミ
+		m_tex = CEffect::TYPE_NORMAL;
 		m_col = D3DXCOLOR(1.0f, 0.5f, 0.2f, 1.0f);
 		m_nMaxApeear = 10;
 		m_nRadius = 20;
@@ -136,6 +140,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 
 	case TYPE_RECYCLABLE:		// 資源ゴミ
+		m_tex = CEffect::TYPE_NORMAL;
 		m_col = D3DXCOLOR(0.5f, 0.3f, 1.0f, 1.0f);
 		m_nMaxApeear = 10;
 		m_nRadius = 20;
@@ -143,6 +148,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 
 	case TYPE_MOVE:			// 移動
+		m_tex = CEffect::TYPE_STEAM;
 		m_col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.05f);
 		m_nMaxApeear = 1;
 		m_nRadius = 40;
@@ -150,6 +156,7 @@ void CParticle::Set(D3DXVECTOR3 pos, TYPE type)
 		break;
 
 	case TYPE_CURVE:		// カーブ
+		m_tex = CEffect::TYPE_FIRE;
 		m_col = D3DXCOLOR(1.0f, 0.3f, 0.2f, 1.0f);
 		m_nMaxApeear = 12;
 		m_nRadius = 7;

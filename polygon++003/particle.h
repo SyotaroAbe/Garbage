@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "objectBillboard.h"
+#include "effect.h"
 
 //===============================================
 // パーティクルクラス
@@ -41,8 +42,9 @@ public:		// 誰でもアクセス可能 [アクセス指定子]
 	void Set(D3DXVECTOR3 pos, TYPE type);
 
 private:	// 自分のみアクセス可能 [アクセス指定子]
+	TYPE m_type;			// 種類
+	CEffect::TYPE m_tex;	// テクスチャの種類
 	D3DXCOLOR m_col;		// 色
-	TYPE type;				// 種類
 	int m_nRadius;			// 半径（大きさ）
 	int m_nLife;			// 寿命
 	int m_nMaxApeear;		// 一度に放出する量

@@ -42,7 +42,6 @@
 
 // フィーバー
 #define MOVE_FEVER			(0.6f)		// 移動速度（フィーバー）
-#define TIME_FEVER			(30)		// フィーバーになる時間
 
 //===============================================
 // コンストラクタ
@@ -292,8 +291,11 @@ void CPlayer::Update(void)
 			CParticle::Create(1)->Set(m_pos, CParticle::TYPE_MOVE);
 		}
 
-		// モーション設定
-		m_pMotion->Set(MOTIONTYPE_MOVE);
+		if (m_pMotion->IsFinish() == true || m_pMotion->GetType() == MOTIONTYPE_NEUTRAL)
+		{
+			// モーション設定
+			m_pMotion->Set(MOTIONTYPE_MOVE);
+		}
 		break;
 
 	case TURN_RIGHT:	// 右へ曲がる
@@ -363,7 +365,9 @@ void CPlayer::Update(void)
 
 	if (m_nParticleCounter < COUNT_PARTICLE && CManager::GetMode() != CScene::MODE_TITLE)
 	{// パーティクル発生時間に達していない
-		CParticle::Create(1)->Set(m_pos, CParticle::TYPE_CURVE);		// パーティクルの生成
+		// パーティクルの生成
+		CParticle::Create(1)->Set(D3DXVECTOR3(m_pos.x + cosf(m_rot.y) * 18.0f, m_pos.y, m_pos.z - sinf(m_rot.y) * 18.0f), CParticle::TYPE_CURVE);
+		CParticle::Create(1)->Set(D3DXVECTOR3(m_pos.x - cosf(m_rot.y) * 18.0f, m_pos.y, m_pos.z + sinf(m_rot.y) * 18.0f), CParticle::TYPE_CURVE);
 		m_nParticleCounter++;											// 発生時間をカウントアップ
 	}
 
@@ -502,4 +506,12 @@ void CPlayer::SetJump(const bool bJump)
 void CPlayer::SetTurn(TURN turn)
 {
 	m_turnType = turn;
+}
+
+//===============================================
+// モーションの設定
+//===============================================
+void CPlayer::SetMotion(MOTIONTYPE type)
+{
+	m_pMotion->Set(type);
 }
