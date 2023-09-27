@@ -321,7 +321,11 @@ void CGarbage::Update(void)
 			{// 分別の設定がされている
 				CRockon::Create(m_pos, CTarget::GetState(), 0, 5);		// その位置にターゲットを設定
 				m_rockonType = CTarget::GetState();
-				m_state = STATE_SEPARATION;								// 分別状態へ
+
+				if (m_rockonType != SEPARATION_NONE)
+				{
+					m_state = STATE_SEPARATION;								// 分別状態へ
+				}
 			}
 		}
 		break;
@@ -355,7 +359,7 @@ void CGarbage::Update(void)
 			|| m_pos.z >= CTutorial::GetTarget()->GetPos().z + TARGET_SIZEY + TARGET_SIZEY || m_pos.z <= CTutorial::GetTarget()->GetPos().z - TARGET_SIZEY - TARGET_SIZEY)
 			|| CManager::GetMode() == CScene::MODE_GAME &&
 			(m_pos.x >= CGame::GetTarget()->GetPos().x + TARGET_SIZEX + TARGET_SIZEX || m_pos.x <= CGame::GetTarget()->GetPos().x - TARGET_SIZEX - TARGET_SIZEX
-				|| m_pos.z >= CGame::GetTarget()->GetPos().z + TARGET_SIZEY + TARGET_SIZEY || m_pos.z <= CGame::GetTarget()->GetPos().z - TARGET_SIZEY - TARGET_SIZEY))
+			|| m_pos.z >= CGame::GetTarget()->GetPos().z + TARGET_SIZEY + TARGET_SIZEY || m_pos.z <= CGame::GetTarget()->GetPos().z - TARGET_SIZEY - TARGET_SIZEY))
 		{// ターゲットの範囲外へ外れた
 			m_state = STATE_NORMAL;		// 通常状態にする
 		}
@@ -371,6 +375,7 @@ void CGarbage::Update(void)
 			{// ゴミゲージが最大じゃない
 				if ((PlayerRot.y <= D3DX_PI * ROT_UP + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_UP - TURN_ROT_DIFF && m_pos.z < PlayerPos.z) 
 					|| (PlayerRot.y <= D3DX_PI * ROT_DOWN + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_DOWN - TURN_ROT_DIFF && m_pos.z > PlayerPos.z)
+					|| (PlayerRot.y <= -D3DX_PI * ROT_DOWN + TURN_ROT_DIFF && PlayerRot.y >= -D3DX_PI * ROT_DOWN - TURN_ROT_DIFF && m_pos.z > PlayerPos.z)
 					|| (PlayerRot.y <= D3DX_PI * ROT_RIGHT + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_RIGHT - TURN_ROT_DIFF && m_pos.x < PlayerPos.x)
 					|| (PlayerRot.y <= D3DX_PI * ROT_LEFT + TURN_ROT_DIFF && PlayerRot.y >= D3DX_PI * ROT_LEFT - TURN_ROT_DIFF && m_pos.x > PlayerPos.x))
 				{// ロックオンしたゴミが画面内にある
@@ -404,6 +409,10 @@ void CGarbage::Update(void)
 				// サウンドの再生
 				CManager::GetSound()->Play(CSound::LABEL_SE_DISABLE);
 			}
+		}
+		else if (m_rockonType == SEPARATION_NONE)
+		{// 分別の設定がされていない
+			m_state = STATE_NORMAL;		// 通常状態にする
 		}
 		//// プレイヤーの上で一定時間静止させる
 		//m_pos = PlayerPos;

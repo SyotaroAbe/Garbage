@@ -138,6 +138,12 @@ void CUiOperation::Update(void)
 		m_nGarbage = CTutorial::GetUiGage()->Get();		// ゴミの量を保存
 	}
 
+	//if (m_nProgress >= TEX_MATCHCOL)
+	//{
+	//	// 設定処理
+	//	CTutorial::GetUiGage()->Set(-MAX_GARBAGE);
+	//}
+
 	if (m_nTypeTex == m_nProgress)
 	{// 進捗とテクスチャの種類が同じ
 		switch (m_nProgress)

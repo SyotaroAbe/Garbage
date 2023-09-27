@@ -235,11 +235,11 @@ void CPlayer::Update(void)
 	{// Lキーが押された
 		m_speed -= 0.01f;
 	}
-	else if (CManager::GetKeyboardInput()->GetPress(DIK_8) == true)
+	else if (CManager::GetKeyboardInput()->GetPress(DIK_8) == true || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_LS, 0))
 	{// Lキーが押された
 		m_speed = MOVE_PLAYER;
 	}
-	else if (CManager::GetKeyboardInput()->GetPress(DIK_9) == true)
+	else if (CManager::GetKeyboardInput()->GetPress(DIK_9) == true || CManager::GetInputGamePad()->GetPress(CInputGamePad::BUTTON_RS, 0))
 	{// Lキーが押された
 		m_speed = MOVE_FEVER;
 	}

@@ -2051,6 +2051,11 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 		{
 			nNumXRand = 1;
 		}
+		else
+		{
+			nNumYRand = 1;
+			nNumXRand = 1;
+		}
 		break;
 	}
 
@@ -2119,8 +2124,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_LEFT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_RIGHT) * DISTANCE_WIDTH), 2);
 					break;
 				}
 				break;
@@ -2140,8 +2145,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2161,8 +2166,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2182,8 +2187,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2203,8 +2208,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2224,8 +2229,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2245,8 +2250,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2266,8 +2271,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;
@@ -2287,8 +2292,8 @@ void CMeshField::Set(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 					break;
 
 				default:		// ‰¡•À‚Ñ
-					//CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
-					//	m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
+					CGarbage::Create(D3DXVECTOR3(m_pos.x + sinf(D3DX_PI * ROT_RIGHT) * nCntX * DISTANCE_WIDTH + sinf(D3DX_PI * ROT_LEFT) * LENTH_FAR,
+						m_pos.y, m_pos.z + nCntY * DISTANCE_HEIGHT + cosf(D3DX_PI * ROT_LEFT) * LENTH_FAR), 2);
 					break;
 				}
 				break;

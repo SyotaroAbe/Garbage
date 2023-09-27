@@ -1,24 +1,3 @@
-﻿  bullet.cpp
-  コードを生成中...
-  コンパイル中...
-  uitarget.cpp
-  uioperation.cpp
-  tutorial.cpp
-  target.cpp
-  renderer.cpp
-  player.cpp
-  pause.cpp
-  object.cpp
-  meshfield.cpp
-  manager.cpp
-  justdust.cpp
-  item.cpp
-  garbage.cpp
-  game.cpp
-  gagefull.cpp
-  edit.cpp
-  dumpster.cpp
-  camera.cpp
-  コードを生成中...
+﻿  garbage.cpp
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.exe
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.pdb (Full PDB)
