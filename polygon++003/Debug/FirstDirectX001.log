@@ -1,3 +1,35 @@
-﻿  garbage.cpp
+﻿  スキップ中... (関連する変更は検出されませんでした)
+  precompile.cpp
+  uioperation.cpp
+  pressenter.cpp
+  manager.cpp
+  コードを生成中...
+  スキップ中... (関連する変更は検出されませんでした)
+  uitarget.cpp
+  uigage.cpp
+  tutorial.cpp
+  title.cpp
+  texture.cpp
+  target.cpp
+  sound.cpp
+  result.cpp
+  renderer.cpp
+  player.cpp
+  objectBillboard.cpp
+  object2D.cpp
+  model.cpp
+  meshfield.cpp
+  main.cpp
+  logo.cpp
+  justdust.cpp
+  hint.cpp
+  garbage.cpp
+  game.cpp
+  gagefull.cpp
+  fever.cpp
+  effect.cpp
+  dumpster.cpp
+  camera.cpp
+  bullet.cpp
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.exe
   FirstDirectX001.vcxproj -> C:\Users\student\Desktop\Garbage()\Garbage\polygon++003\Debug\FirstDirectX001.pdb (Full PDB)
